@@ -2,6 +2,8 @@ import { useState, useEffect } from "preact/hooks";
 import { Input } from "./textbox";
 import { jobBoards, workOptions, Query } from "../utils/query";
 
+const inputFmt = `pt-2 pb-2`;
+
 export default function SearchQuery() {
   /* input fields:
    * general search: textbox
@@ -26,24 +28,44 @@ export default function SearchQuery() {
 
   return (
     <section className="w-full bg-slate-600 pb-5">
-      <form>
+      <form className="p-4" onSubmit={(e) => {
+        e.preventDefault();
+        console.log(search);
+      }}>
         <Input
           id="search"
           value={search.search}
           onChange={(val) => {
-            setSearch(...search, (search.search = val));
+            setSearch({...search, search: val});
             console.log(search);
           }}
+          className={inputFmt}
         />
-        <br />
         <Input
           id="pay_range"
           value={search.pay_range}
           onChange={(val) => {
-            setSearch(...search, (search.pay_range = val));
+            setSearch({...search, pay_range: val});
           }}
+          className={inputFmt}
         />
-        <button onClick={() => console.log(search)}>???</button>
+        <Input
+          id="companies"
+          value={search.companies}
+          onChange={(val) => {
+            setSearch({...search, companies: val});
+          }}
+          className={inputFmt}
+        />
+        <Input
+          id="location"
+          value={search.location}
+          onChange={(val) => {
+            setSearch({...search, location: val});
+          }}
+          className={inputFmt}
+        />
+        <button type="submit">???</button>
       </form>
     </section>
   );
