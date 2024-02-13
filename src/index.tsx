@@ -1,9 +1,8 @@
 import { render } from "preact";
 import { useState, useEffect } from "preact/hooks";
-import axios from "axios";
 import Card from "./components/card";
-
-import preactLogo from "./assets/preact.svg";
+import SearchQuery from "./components/query";
+import { GetJobListings } from "./utils/listings";
 import "./style.css";
 
 function JobListings() {
@@ -11,15 +10,10 @@ function JobListings() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("https://fakerapi.it/api/v1/companies?_quantity=25")
-      .then((res) => {
-        console.log(res);
-        console.log(res.data.data);
-        setJobs(res.data.data);
-        setLoading(false);
-        console.log(jobs);
-      });
+    GetJobListings().then((val) => {
+      setJobs(val);
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -29,9 +23,7 @@ function JobListings() {
       ) : (
         <ul>
           {jobs.map((job) => (
-            <li key={job.id}>
-              <Card job={job} />
-            </li>
+            <Card key={job.id} job={job} />
           ))}
         </ul>
       )}
@@ -42,7 +34,7 @@ function JobListings() {
 export function App() {
   return (
     <div>
-      Wow
+      <SearchQuery />
       <JobListings />
     </div>
   );
