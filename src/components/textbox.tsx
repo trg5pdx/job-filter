@@ -6,8 +6,8 @@ export function Input(props: {
 }) {
   console.log(props.id);
   return (
-    <div className={props.className}>
-      <label htmlFor={props.id}>{props.id + ": "}</label>
+    <label htmlFor={props.id} className={props.className}>
+      {props.id + ": "}
       <input
         type="text"
         id={props.id}
@@ -15,6 +15,21 @@ export function Input(props: {
         onChange={(e) => props.onChange(e.target.value)}
         placeholder={props.id}
       />
-    </div>
+    </label>
+  );
+}
+
+export function Checkbox(props: {
+  id: string;
+  title: string;
+  value: bool;
+  onClick: () => void;
+  className: string;
+}) {
+  return (
+    <label htmlFor={props.id} classsName={props.className}>
+      {props.title}
+      <input type="checkbox" checked={props.value} onClick={props.onClick} />
+    </label>
   );
 }

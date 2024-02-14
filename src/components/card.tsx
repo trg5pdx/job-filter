@@ -7,10 +7,10 @@ export default function Card(props: { job: JobData }) {
       <div className="col-span-5">
         <h3 className="text-bold text-3xl">{props.job.title}</h3>
         <h4 className="text-bold text-2xl">{props.job.company}</h4>
-        <h6>{props.job.companyDesc}</h6>
+        {/* <h6>{props.job.companyDesc}</h6>
         <a href={props.job.url}>Jobicy posting</a>
-        {/* <p>Location: {props.job.props.job.props.jobGeo}</p> */}
-        <p>{props.job.desc[0]}</p>
+        <p>Location: {props.job.props.job.props.jobGeo}</p> 
+        <p>{props.job.desc[0]}</p> */}
       </div>
     </li>
   );
