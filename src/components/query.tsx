@@ -102,6 +102,18 @@ export default function SearchQuery() {
           className={inputFmt}
         />
         <button type="submit">???</button>
+        <div>
+          {"Boards to pull from: "}
+          <Checkbox
+            id="jobicy"
+            title="Jobicy"
+            value={search.board_jobicy}
+            onClick={() => {
+              setSearch({ ...search, board_jobicy: !search.board_jobicy });
+            }}
+            className={checkStyle}
+          />
+        </div>
       </form>
     </section>
   );

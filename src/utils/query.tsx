@@ -6,6 +6,7 @@ export enum workOptions {
 
 export enum jobBoards {
   Jobicy,
+  Other
 }
 
 export class Query {
