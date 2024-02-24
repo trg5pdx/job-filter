@@ -33,7 +33,7 @@ export default function SearchQuery() {
   return (
     <section className="w-full bg-slate-600 pb-5">
       <form
-        className="p-4"
+        className="p-4 grid"
         onSubmit={(e) => {
           e.preventDefault();
           console.log(search);
@@ -61,6 +61,14 @@ export default function SearchQuery() {
           value={search.companies}
           onChange={(val) => {
             setSearch({ ...search, companies: val });
+          }}
+          className={inputFmt}
+        />
+        <Input
+          id="location"
+          value={search.location}
+          onChange={(val) => {
+            setSearch({ ...search, location: val });
           }}
           className={inputFmt}
         />
@@ -93,15 +101,6 @@ export default function SearchQuery() {
             className={checkStyle}
           />
         </div>
-        <Input
-          id="location"
-          value={search.location}
-          onChange={(val) => {
-            setSearch({ ...search, location: val });
-          }}
-          className={inputFmt}
-        />
-        <button type="submit">???</button>
         <div>
           {"Boards to pull from: "}
           <Checkbox
@@ -114,6 +113,7 @@ export default function SearchQuery() {
             className={checkStyle}
           />
         </div>
+        <button type="submit">Submit Search</button>
       </form>
     </section>
   );
