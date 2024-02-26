@@ -5,7 +5,21 @@ import { jobBoards, workOptions, Query } from "../utils/query";
 const inputFmt = `pt-2 pb-2`;
 const checkStyle = `pt-2 pb-2`;
 
-export default function SearchQuery() {
+export default function SearchQuery(props: {
+  query: Query;
+  setQuery: (
+    search: string,
+    pay_range: string,
+    pay_min: number,
+    pay_max: number,
+    companies: string,
+    remote: bool,
+    inperson: bool,
+    hybrid: bool,
+    location: string,
+    board: [jobBoards]
+  ) => void;
+}) {
   /* input fields:
    * general search: textbox
    * pay range: textbox
@@ -21,6 +35,8 @@ export default function SearchQuery() {
   const [search, setSearch] = useState({
     search: "",
     pay_range: "",
+    pay_min: "",
+    pay_max: "",
     companies: "",
     remote: true,
     hybrid: true,
@@ -37,28 +53,52 @@ export default function SearchQuery() {
         onSubmit={(e) => {
           e.preventDefault();
           console.log(search);
+          props.setQuery(
+            search.search,
+            search.pay_range,
+            search.pay_min,
+            search.pay_max,
+            search.companies,
+            search.remote,
+            search.inperson,
+            search.hybrid,
+            search.location,
+            search.board
+          );
         }}
       >
         <Input
           id="search"
           value={search.search}
+          inputType={"text"}
           onChange={(val) => {
             setSearch({ ...search, search: val });
             console.log(search);
           }}
           className={inputFmt}
         />
-        <Input
-          id="pay_range"
-          value={search.pay_range}
-          onChange={(val) => {
-            setSearch({ ...search, pay_range: val });
-          }}
-          className={inputFmt}
-        />
+        <div>
+          <Input
+            id="pay_min"
+            value={search.pay_min}
+            inputType={"number"}
+            onChange={(val) => {
+              setSearch({ ...search, pay_min: val });
+            }}
+          />
+          <Input
+            id="pay_max"
+            value={search.pay_max}
+            inputType={"number"}
+            onChange={(val) => {
+              setSearch({ ...search, pay_max: val });
+            }}
+          />
+        </div>
         <Input
           id="companies"
           value={search.companies}
+          inputType={"text"}
           onChange={(val) => {
             setSearch({ ...search, companies: val });
           }}
@@ -67,6 +107,7 @@ export default function SearchQuery() {
         <Input
           id="location"
           value={search.location}
+          inputType={"text"}
           onChange={(val) => {
             setSearch({ ...search, location: val });
           }}
@@ -113,7 +154,9 @@ export default function SearchQuery() {
             className={checkStyle}
           />
         </div>
-        <button type="submit">Submit Search</button>
+        <button type="submit" className="bg-slate-900 rounded-md p-2 mt-2 mb-2">
+          Submit Search
+        </button>
       </form>
     </section>
   );

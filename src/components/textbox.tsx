@@ -1,15 +1,15 @@
 export function Input(props: {
   id: string;
   value: string;
+  inputType: string;
   onChange: (arg0: string) => void;
   className: string;
 }) {
-  console.log(props.id);
   return (
     <label htmlFor={props.id} className={props.className}>
       {props.id + ": "}
       <input
-        type="text"
+        type={props.inputType}
         id={props.id}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}

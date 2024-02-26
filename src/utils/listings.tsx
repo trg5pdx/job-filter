@@ -10,9 +10,9 @@ export async function GetJobListings() {
       false,
       val.annualSalaryMin,
       val.annualSalaryMax,
-      val.salaryCurrency,
-    ); 
-    let wageProvided = val.annualSalaryMin != null;    
+      val.salaryCurrency
+    );
+    let wageProvided = val.annualSalaryMin != null;
 
     let job = new JobData(
       val.jobTitle,
@@ -21,13 +21,13 @@ export async function GetJobListings() {
       val.jobExcerpt,
       val.url,
       val.companyLogo,
-      [val.jobGeo],
+      val.jobGeo.split(", ").map((val) => val.trim()),
       "Jobicy",
       pay,
       wageProvided,
       val.pubDate,
       val.jobIndustry,
-      val.jobType,
+      val.jobType
     );
 
     return job;
