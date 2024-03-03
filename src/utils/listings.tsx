@@ -6,13 +6,17 @@ export async function GetJobListings() {
   const response = await axios.get(URL);
 
   let jobs = response.data.jobs.map((val) => {
-    let pay = new Pay(
-      false,
-      val.annualSalaryMin,
-      val.annualSalaryMax,
-      val.salaryCurrency
-    );
-    let wageProvided = val.annualSalaryMin != null;
+    let wage: Pay =
+      val.annualSalaryMin == undefined
+        ? {
+            provided: false,
+          }
+        : {
+            provided: true,
+            salaryMin: parseInt(val.annualSalaryMin),
+            salaryMax: parseInt(val.annualSalaryMax),
+            currency: val.salaryCurrency,
+          };
 
     let job = new JobData(
       val.jobTitle,
@@ -23,8 +27,7 @@ export async function GetJobListings() {
       val.companyLogo,
       val.jobGeo.split(", ").map((val) => val.trim()),
       "Jobicy",
-      pay,
-      wageProvided,
+      wage,
       val.pubDate,
       val.jobIndustry,
       val.jobType

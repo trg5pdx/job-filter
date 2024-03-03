@@ -5,23 +5,13 @@ most of the job data fields are built off of jobicy's api, will need to be
 changed as more job boards are added 
 */
 
-export class Pay {
-  hourly: bool;
-  min: number;
-  max: number;
-  currency: string;
-
-  /* 
-    TODO: add a function for the currency so we get the right symbol, and add
-    another function that returns a formatted range of the two numbers
-  */
-
-  constructor(hourly: bool, min: number, max: number, currency: string) {
-    this.hourly = hourly;
-    this.min = min;
-    this.max = max;
-    this.currency = currency;
-  }
+export interface Pay {
+  provided: bool;
+  hourlyMin?: number;
+  hourlyMax?: number;
+  salaryMin?: number;
+  salaryMax?: number;
+  currency?: string;
 }
 
 export class JobData {
@@ -34,7 +24,6 @@ export class JobData {
   location: [string];
   jobBoard: jobBoards;
   wage: Pay;
-  wageProvided: bool;
   postDate: string;
   jobIndustry: string;
   jobType: string;
@@ -54,7 +43,6 @@ export class JobData {
     location: [string],
     jobBoard: string,
     wage: Pay,
-    wageProvided: bool,
     postDate: string,
     jobIndustry: string,
     jobType: string
@@ -67,7 +55,6 @@ export class JobData {
     this.logo = logo;
     this.location = location;
     this.wage = wage;
-    this.wageProvided = wageProvided;
     this.postDate = postDate;
     this.jobIndustry = jobIndustry;
     this.jobType = jobType;

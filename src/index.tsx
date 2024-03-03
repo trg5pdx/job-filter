@@ -3,10 +3,11 @@ import { useState, useEffect } from "preact/hooks";
 import Card from "./components/card";
 import SearchQuery from "./components/query";
 import { GetJobListings } from "./utils/listings";
-import { Query } from "./utils/query";
+import { Query, workOptions, jobBoards } from "./utils/query";
+import { Pay } from "./utils/jobdata";
 import "./style.css";
 
-function JobListings() {
+function JobListings(props: { query: Query }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,15 +18,30 @@ function JobListings() {
     });
   }, []);
 
+  useEffect(() => {
+    console.log(props.query);
+  }, [props.query]);
+
   return (
     <div>
       {loading ? (
         <p>loading...</p>
       ) : (
         <ul>
-          {jobs.map((job) => (
-            <Card key={job.id} job={job} />
-          ))}
+          {jobs.map((job) => {
+            if (props.query.wage) {
+              if (
+                job.wage.salaryMin >= props.query.wage.salaryMin &&
+                job.wage.salaryMax <= props.query.wage.salaryMax
+              ) {
+                return <Card key={job.id} job={job} />;
+              } else {
+                return <></>;
+              }
+            } else {
+              return <Card key={job.id} job={job} />;
+            }
+          })}
         </ul>
       )}
     </div>
@@ -33,7 +49,7 @@ function JobListings() {
 }
 
 export function App() {
-  const [query, setQuery] = useState(new Query());
+  const [query, setQuery] = useState<Query>("");
 
   const filterQuery = (
     search: string,
@@ -47,18 +63,23 @@ export function App() {
     location: string,
     board: [jobBoards]
   ) => {
-    let current = new Query(
+    let wage: Pay = {
+      provided: true,
+      salaryMin: pay_min,
+      salaryMax: pay_max,
+    };
+    let options = [workOptions.Remote];
+    let boards = [jobBoards.jobicy];
+    let current: Query = {
       search,
-      pay_range,
-      pay_min,
-      pay_max,
+      wage,
       companies,
-      remote,
-      inperson,
-      hybrid,
+      options,
       location,
-      board
-    );
+      boards,
+    };
+
+    setQuery(current);
   };
 
   useEffect(() => {
@@ -68,7 +89,7 @@ export function App() {
   return (
     <div>
       <SearchQuery query={query} setQuery={filterQuery} />
-      <JobListings />
+      <JobListings query={query} />
     </div>
   );
 }

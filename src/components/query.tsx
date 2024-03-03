@@ -83,7 +83,7 @@ export default function SearchQuery(props: {
             value={search.pay_min}
             inputType={"number"}
             onChange={(val) => {
-              setSearch({ ...search, pay_min: val });
+              setSearch({ ...search, pay_min: parseInt(val) });
             }}
           />
           <Input
@@ -91,7 +91,7 @@ export default function SearchQuery(props: {
             value={search.pay_max}
             inputType={"number"}
             onChange={(val) => {
-              setSearch({ ...search, pay_max: val });
+              setSearch({ ...search, pay_max: parseInt(val) });
             }}
           />
         </div>

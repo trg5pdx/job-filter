@@ -7,7 +7,7 @@ export default function Card(props: { job: JobData }) {
   const buttonOpened = "rotate-90 " + buttonClosed;
   
   const locations = props.job.location.map((val) => {
-    return (<div className="rounded-lg bg-slate-300 text-black w-fit p-1">
+    return (<div className="rounded-lg bg-slate-300 text-black w-fit p-1 m-1">
       {val}
      </div>)
   });
@@ -21,13 +21,13 @@ export default function Card(props: { job: JobData }) {
       <div className="col-span-5">
         <h3 className="text-bold text-3xl">{props.job.title}</h3>
         <h4 className="text-bold text-2xl">{props.job.company}</h4>
-        <h5 className="text-bold text-xl">Location: {locations}</h5>
+        <h5 className="text-bold text-xl flex flex-row flex-wrap">Location: {locations}</h5>
         <h6 className="text-bold text-xl">
-          {props.job.wageProvided ? (
+          {props.job.wage.provided ? (
               "Pay range: " + 
-              props.job.wage.min +
+              props.job.wage.salaryMin +
               " - " +
-              props.job.wage.max
+              props.job.wage.salaryMax
           ) : (
             "Pay not provided"
           )}
