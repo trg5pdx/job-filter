@@ -5,6 +5,29 @@ most of the job data fields are built off of jobicy's api, will need to be
 changed as more job boards are added 
 */
 
+// As of 2024/3/4, this was entirely pulled from jobicy's industries field,
+// will be updated as more job boards get added
+// source: https://jobicy.com/api/v2/remote-jobs?get=industries
+export enum Industry {
+  BusinessDev,
+  Copywriting,
+  CustomerSuccess,
+  DataScience,
+  DesignCreative,
+  DevopsSysadmin,
+  FinanceLegal,
+  AccountingFinance,
+  HRRecruiting,
+  MarketingSales,
+  ProductOperations,
+  Programming,
+  Sales,
+  SEO,
+  SocialMediaMarketing,
+  TechnicalSupport,
+  WebAppDesign,
+}
+
 export interface Pay {
   provided: bool;
   hourlyMin?: number;

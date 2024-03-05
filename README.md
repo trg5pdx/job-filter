@@ -33,8 +33,9 @@ qualified for, and would be more interested in.
 - [ ] Get the search query to actually send a query to the related job sites,
       and then filter based on their settings
 - [ ] Add a search field for filtering based on industry
-- [ ] Filter out punctuation that ends up as code and replace it with the
+- [x] Filter out punctuation that ends up as code and replace it with the
       appropriate punctuation
+  - [ ] Support hexadecimal codes
 - [ ] Parse the html from jobicy postings and put it into its own class
 - [ ] Parse the job postings and pull information like YOE from them
   - [ ] Add a YOE field into the search form
