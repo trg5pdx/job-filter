@@ -1,4 +1,4 @@
-import { Pay } from "./jobdata";
+import { Pay, Industry } from './jobdata'
 
 export enum workOptions {
   Remote,
@@ -12,10 +12,11 @@ export enum jobBoards {
 }
 
 export interface Query {
-  search: string;
-  wage?: Pay;
-  companies?: string;
-  options?: [workOptions];
-  location?: string;
-  board?: [jobBoards];
+  search: string
+  wage?: Pay
+  companies?: string
+  options?: [workOptions]
+  location?: string
+  industry?: [Industry]
+  board?: [jobBoards]
 }

@@ -28,8 +28,8 @@ export function Checkbox(props: {
 }) {
   return (
     <label htmlFor={props.id} classsName={props.className}>
-      {props.title}
       <input type="checkbox" checked={props.value} onClick={props.onClick} />
+      {" " + props.title}
     </label>
   );
 }

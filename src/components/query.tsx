@@ -1,79 +1,75 @@
-import { useState, useEffect } from "preact/hooks";
-import { Input, Checkbox } from "./textbox";
-import { jobBoards, workOptions, Query } from "../utils/query";
+import { useState, useEffect } from 'preact/hooks'
+import { Input, Checkbox } from './textbox'
+import IndustrySelect from './industryselect'
+import { Industry } from '../utils/jobdata'
+import { jobBoards, workOptions, Query } from '../utils/query'
+import WorkChoice from './workChoice'
 
-const inputFmt = `pt-2 pb-2`;
-const checkStyle = `pt-2 pb-2`;
+const inputFmt = `pt-2 pb-2`
+const checkStyle = `pt-2 pb-2`
 
 export default function SearchQuery(props: {
-  query: Query;
-  setQuery: (
-    search: string,
-    pay_range: string,
-    pay_min: number,
-    pay_max: number,
-    companies: string,
-    remote: bool,
-    inperson: bool,
-    hybrid: bool,
-    location: string,
-    board: [jobBoards]
-  ) => void;
+  query: Query
+  setQuery: (Query) => void
 }) {
-  /* input fields:
-   * general search: textbox
-   * pay range: textbox
-   * companies (comma seperated list; empty doesnt filter by company): textbox
-   * remote/in person/hybrid: checkboxes
-   * location: textbox
-   * job boards to pull from: checkboxes
-   * submit: button
-   * reset query: button
-   * later: have a reload previous query button?
-   * */
-
   const [search, setSearch] = useState({
-    search: "",
-    pay_range: "",
-    pay_min: "",
-    pay_max: "",
-    companies: "",
-    remote: true,
-    hybrid: true,
-    inperson: true,
+    search: '',
+    pay_range: '',
+    pay_min: '',
+    pay_max: '',
+    companies: '',
+    workChoice: [],
     board_jobicy: true,
-    location: "",
+    location: '',
     board: [jobBoards.Jobicy],
-  });
+  })
+  const [industry, setIndustry] = useState(new Array(16).fill(false))
+  const [viewIndustry, setViewIndustry] = useState(false)
 
   return (
     <section className="w-full bg-slate-600 pb-5">
       <form
         className="p-4 grid"
         onSubmit={(e) => {
-          e.preventDefault();
-          console.log(search);
-          props.setQuery(
-            search.search,
-            search.pay_range,
-            search.pay_min,
-            search.pay_max,
-            search.companies,
-            search.remote,
-            search.inperson,
-            search.hybrid,
-            search.location,
-            search.board
-          );
+          e.preventDefault()
+          let wage =
+            search.pay_min == undefined || search.pay_max == undefined
+              ? {
+                  provided: false,
+                }
+              : {
+                  provided: true,
+                  salaryMin: parseInt(search.pay_min),
+                  salaryMax: parseInt(search.pay_max),
+                }
+          let job_boards = []
+          let job_industry = []
+          if (search.board_jobicy) {
+            job_boards.push(jobBoards.Jobicy)
+          }
+          for (let i = 0; i < industry.length; ++i) {
+            if (industry[i]) {
+              job_industry.push(Industry[i])
+            }
+          }
+          props.setQuery({
+            search: search.search,
+            wage: wage,
+            companies: search.companies,
+            options: search.workChoice,
+            location: search.location,
+            industry: job_industry,
+            board: job_boards,
+          })
         }}
       >
         <Input
           id="search"
           value={search.search}
-          inputType={"text"}
+          inputType={'text'}
           onChange={(val) => {
-            setSearch({ ...search, search: val });
-            console.log(search);
+            setSearch({ ...search, search: val })
+            console.log(search)
           }}
           className={inputFmt}
         />
@@ -81,75 +77,74 @@ export default function SearchQuery(props: {
           <Input
             id="pay_min"
             value={search.pay_min}
-            inputType={"number"}
+            inputType={'number'}
             onChange={(val) => {
-              setSearch({ ...search, pay_min: parseInt(val) });
+              setSearch({ ...search, pay_min: parseInt(val) })
             }}
           />
           <Input
             id="pay_max"
             value={search.pay_max}
-            inputType={"number"}
+            inputType={'number'}
             onChange={(val) => {
-              setSearch({ ...search, pay_max: parseInt(val) });
+              setSearch({ ...search, pay_max: parseInt(val) })
             }}
           />
         </div>
         <Input
           id="companies"
           value={search.companies}
-          inputType={"text"}
+          inputType={'text'}
           onChange={(val) => {
-            setSearch({ ...search, companies: val });
+            setSearch({ ...search, companies: val })
           }}
           className={inputFmt}
         />
         <Input
           id="location"
           value={search.location}
-          inputType={"text"}
+          inputType={'text'}
           onChange={(val) => {
-            setSearch({ ...search, location: val });
+            setSearch({ ...search, location: val })
           }}
           className={inputFmt}
         />
+        <WorkChoice
+          choice={search.workChoice}
+          setChoice={(val: [workOptions]) => {
+            setSearch({
+              ...search,
+              workChoice: val,
+            })
+          }}
+        />
         <div>
-          <Checkbox
-            id="Remote"
-            title="Remote"
-            value={search.remote}
-            onClick={() => {
-              setSearch({ ...search, remote: !search.remote });
-            }}
-            className={checkStyle}
-          />
-          <Checkbox
-            id="Hybrid"
-            title="Hybrid"
-            value={search.hybrid}
-            onClick={() => {
-              setSearch({ ...search, hybrid: !search.hybrid });
-            }}
-            className={checkStyle}
-          />
-          <Checkbox
-            id="Inperson"
-            title="Inperson"
-            value={search.inperson}
-            onClick={() => {
-              setSearch({ ...search, inperson: !search.inperson });
-            }}
-            className={checkStyle}
-          />
+          <button onClick={() => setViewIndustry(!viewIndustry)}>
+            <label>{'Industries '}</label>
+            {'>'}
+          </button>
+          {viewIndustry ? (
+            <IndustrySelect
+              industry={industry}
+              setIndustry={(key: number) => {
+                setIndustry({
+                  ...industry,
+                  [key]: !industry[key],
+                })
+              }}
+            />
+          ) : (
+            <></>
+          )}
         </div>
         <div>
-          {"Boards to pull from: "}
+          {'Boards to pull from: '}
           <Checkbox
             id="jobicy"
             title="Jobicy"
             value={search.board_jobicy}
             onClick={() => {
-              setSearch({ ...search, board_jobicy: !search.board_jobicy });
+              setSearch({ ...search, board_jobicy: !search.board_jobicy })
             }}
             className={checkStyle}
           />
@@ -159,5 +154,5 @@ export default function SearchQuery(props: {
         </button>
       </form>
     </section>
-  );
+  )
 }
