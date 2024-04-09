@@ -1,14 +1,16 @@
 import { useState } from 'preact/hooks'
-import JobData from '../utils/jobdata'
+import { JobData } from '../utils/jobdata'
 
 export default function Card(props: { job: JobData }) {
   const [details, openDetails] = useState(false)
   const buttonClosed = 'transition text-8xl'
-  const buttonOpened = 'rotate-90 ' + buttonClosed
-
-  const locations = props.job.location.map((val) => {
+  const buttonOpened = `rotate-90 ${buttonClosed}`
+  const locations = props.job.location.map((val, key) => {
     return (
-      <div className="rounded-lg bg-slate-300 text-black w-fit p-1 m-1">
+      <div
+        key={key}
+        className="rounded-lg bg-slate-300 text-black w-fit p-1 m-1"
+      >
         {val}
       </div>
     )
@@ -28,17 +30,16 @@ export default function Card(props: { job: JobData }) {
         </h5>
         <h6 className="text-bold text-xl">
           {props.job.wage.provided
-            ? 'Pay range: ' +
-              props.job.wage.salaryMin +
-              ' - ' +
-              props.job.wage.salaryMax
+            ? `Pay range: ${props.job.wage.salaryMin} - ${props.job.wage.salaryMax}`
             : 'Pay not provided'}
         </h6>
       </div>
       <button
         onClick={() => openDetails(!details)}
         className={details ? buttonOpened : buttonClosed}
-    >></button>
+      >
+        {'>'}
+      </button>
       {details ? (
         <div className="transition col-span-7">
           <hr className="m-6" />

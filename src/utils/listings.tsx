@@ -14,14 +14,24 @@ function strip_HTML(description: string) {
   // console.log(description);
   // rule for selecting between two chars: https://stackoverflow.com/a/3335593
   const divRemoved = description.replaceAll(/(<\/?div([^>]*)>)+/g, '')
-  const ulRule = /((?<=<ul>)[\s\S]*?(?=<\/ul>))+/g
-  const liRule = /((?<=<li>)[\s\S]*?(?=<\/li>))+/g
+  // const ulRule = /((?<=<ul>)[\s\S]*?(?=<\/ul>))+/g
+  // const liRule = /((?<=<li>)[\s\S]*?(?=<\/li>))+/g
+  // LEFT OFF WORKING ON TAG RULE, I want to iterate through get different tags
+  const tagRule = /((?<=<[\s\S]>*?)[\s\S]*?(?=<\/[\s\S]>))+/g
 
-  const lists = ulRule.exec(divRemoved)
-  if (lists) {
-    const list_items = lists.map((item) => liRule.exec(item))
-    // console.log(list_items);
+  const newList = tagRule.exec(divRemoved)
+  if (newList) {
+    console.log(newList)
   }
+
+  /* const lists = ulRule.exec(divRemoved)
+  console.log(lists)
+  if (lists) {
+    const list_items = lists.map((item) => {
+      liRule.exec(item)
+    })
+    console.log(list_items)
+  } */
 }
 
 export async function GetJobListings() {
@@ -36,12 +46,12 @@ export async function GetJobListings() {
           }
         : {
             provided: true,
-            salaryMin: parseInt(val.annualSalaryMin),
-            salaryMax: parseInt(val.annualSalaryMax),
+            salaryMin: parseInt(val.annualSalaryMin, 10),
+            salaryMax: parseInt(val.annualSalaryMax, 10),
             currency: val.salaryCurrency,
           }
 
-    strip_HTML(val.jobDescription)
+    // strip_HTML(val.jobDescription)
     let job = new JobData(
       val.jobTitle,
       val.jobDescription,
@@ -49,7 +59,7 @@ export async function GetJobListings() {
       fix_unicode(val.jobExcerpt),
       val.url,
       val.companyLogo,
-      val.jobGeo.split(', ').map((val) => val.trim()),
+      val.jobGeo.split(', ').map((val: string) => val.trim()),
       'Jobicy',
       wage,
       val.pubDate,

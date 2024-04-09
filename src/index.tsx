@@ -2,20 +2,21 @@ import { render } from 'preact'
 import { useState, useEffect } from 'preact/hooks'
 import Card from './components/card'
 import SearchQuery from './components/query'
-import Modal from './components/modal'
+// import Modal from './components/modal'
 import { GetJobListings } from './utils/listings'
-import { Query, workOptions, jobBoards } from './utils/query'
-import { Pay } from './utils/jobdata'
+import { Query, filter_jobs } from './utils/query'
+// import { Pay } from './utils/jobdata'
 import './style.css'
 
 function JobListings(props: { query: Query }) {
   const [jobs, setJobs] = useState([])
+  const [pulledJobs, setPulledJobs] = useState([])
   const [loading, setLoading] = useState(true)
 
   const format_jobs = (jobs) => {
-    return jobs.map((job) => {
+    return jobs.map((job, key) => {
       return (
-        <li>
+        <li key={key}>
           <Card key={job.id} job={job} />
         </li>
       )
@@ -24,7 +25,8 @@ function JobListings(props: { query: Query }) {
 
   useEffect(() => {
     GetJobListings().then((val) => {
-      setJobs(format_jobs(val))
+      setPulledJobs(val)
+      setJobs(val)
       setLoading(false)
     })
   }, [])
@@ -32,15 +34,18 @@ function JobListings(props: { query: Query }) {
   useEffect(() => {
     console.log(props.query)
     console.log(jobs)
+    let filtered = filter_jobs(pulledJobs, props.query)
+    console.log(filtered)
+    setJobs(filtered)
   }, [props.query])
 
-  return <div>{loading ? <p>loading...</p> : <ul>{jobs}</ul>}</div>
+  return <div>{loading ? <p>loading...</p> : <ul>{format_jobs(jobs)}</ul>}</div>
 }
 
 export function App() {
-  const [query, setQuery] = useState<Query>('')
-  const [modalView, setModalView] = useState(false)
-  const [modalChild, setModalChild] = useState(<></>)
+  const [query, setQuery] = useState<Query>({ search: '' })
+  /* const [modalView, setModalView] = useState(false)
+  const [modalChild, setModalChild] = useState(<></>) */
 
   useEffect(() => {
     console.log(query)

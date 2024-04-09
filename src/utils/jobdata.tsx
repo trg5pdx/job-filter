@@ -28,7 +28,7 @@ export enum Industry {
 }
 
 export interface Pay {
-  provided: bool
+  provided: boolean
   hourlyMin?: number
   hourlyMax?: number
   salaryMin?: number
@@ -57,7 +57,7 @@ export class JobData {
 
   constructor(
     title: string,
-    desc: string,
+    desc: [string],
     company: string,
     companyDesc: string,
     link: string,
@@ -71,7 +71,7 @@ export class JobData {
   ) {
     this.title = title
     this.desc = desc
-    this.company = company.split('\n')
+    this.company = company
     this.companyDesc = companyDesc
     this.link = link
     this.logo = logo
@@ -84,8 +84,10 @@ export class JobData {
     switch (jobBoard) {
       case 'Jobicy':
         this.jobBoard = jobBoards.Jobicy
+        break
       default:
         this.jobBoard = jobBoards.Other
+        break
     }
   }
 }

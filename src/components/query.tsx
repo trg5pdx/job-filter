@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { Input, Checkbox } from './textbox'
 import IndustrySelect from './industryselect'
 import { Industry } from '../utils/jobdata'
@@ -26,22 +26,42 @@ export default function SearchQuery(props: {
   const [industry, setIndustry] = useState(new Array(16).fill(false))
   const [viewIndustry, setViewIndustry] = useState(false)
 
+  const isValid = (x: string) => {
+    if (x == undefined || isNaN(parseInt(x, 10))) {
+      return false
+    }
+    return true
+  }
+
+  const formatWage = (payMin: string, payMax: string) => {
+    if (!isValid(payMin) && !isValid(payMax)) {
+      return { provided: false }
+    }
+
+    if (!isValid(payMax)) {
+      return {
+        provided: true,
+        salaryMin: parseInt(payMin, 10),
+      }
+    } else if (!isValid(payMin)) {
+      return {
+        provided: true,
+        salaryMax: parseInt(payMax, 10),
+      }
+    }
+    return {
+      provided: true,
+      salaryMin: parseInt(payMin, 10),
+      salaryMax: parseInt(payMax, 10),
+    }
+  }
+
   return (
     <section className="w-full bg-slate-600 pb-5">
       <form
         className="p-4 grid"
         onSubmit={(e) => {
           e.preventDefault()
-          let wage =
-            search.pay_min == undefined || search.pay_max == undefined
-              ? {
-                  provided: false,
-                }
-              : {
-                  provided: true,
-                  salaryMin: parseInt(search.pay_min),
-                  salaryMax: parseInt(search.pay_max),
-                }
           let job_boards = []
           let job_industry = []
           if (search.board_jobicy) {
@@ -54,7 +74,7 @@ export default function SearchQuery(props: {
           }
           props.setQuery({
             search: search.search,
-            wage: wage,
+            wage: formatWage(search.pay_min, search.pay_max),
             companies: search.companies,
             options: search.workChoice,
             location: search.location,
