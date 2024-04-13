@@ -32,11 +32,10 @@ function JobListings(props: { query: Query }) {
   }, [])
 
   useEffect(() => {
-    console.log(props.query)
-    console.log(jobs)
     let filtered = filter_jobs(pulledJobs, props.query)
-    console.log(filtered)
+    // console.log(filtered)
     setJobs(filtered)
+    // console.log(pulledJobs, filtered)
   }, [props.query])
 
   return <div>{loading ? <p>loading...</p> : <ul>{format_jobs(jobs)}</ul>}</div>

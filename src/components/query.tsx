@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useState, useEffect } from 'preact/hooks'
 import { Input, Checkbox } from './textbox'
 import IndustrySelect from './industryselect'
 import { Industry } from '../utils/jobdata'
@@ -25,6 +25,10 @@ export default function SearchQuery(props: {
   })
   const [industry, setIndustry] = useState(new Array(16).fill(false))
   const [viewIndustry, setViewIndustry] = useState(false)
+
+  useEffect(() => {
+    industry
+  }, [industry])
 
   const isValid = (x: string) => {
     if (x == undefined || isNaN(parseInt(x, 10))) {
@@ -67,11 +71,14 @@ export default function SearchQuery(props: {
           if (search.board_jobicy) {
             job_boards.push(jobBoards.Jobicy)
           }
+          // FIX THIS; struggling to convert the array of bools into enums properly
           for (let i = 0; i < industry.length; ++i) {
             if (industry[i]) {
-              job_industry.push(Industry[i])
+              job_industry.push(industry[i])
             }
           }
+
+          console.log(job_industry)
           props.setQuery({
             search: search.search,
             wage: formatWage(search.pay_min, search.pay_max),
@@ -99,7 +106,7 @@ export default function SearchQuery(props: {
             value={search.pay_min}
             inputType={'number'}
             onChange={(val) => {
-              setSearch({ ...search, pay_min: parseInt(val) })
+              setSearch({ ...search, pay_min: val })
             }}
           />
           <Input
@@ -107,7 +114,7 @@ export default function SearchQuery(props: {
             value={search.pay_max}
             inputType={'number'}
             onChange={(val) => {
-              setSearch({ ...search, pay_max: parseInt(val) })
+              setSearch({ ...search, pay_max: val })
             }}
           />
         </div>

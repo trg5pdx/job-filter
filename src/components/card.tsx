@@ -28,6 +28,7 @@ export default function Card(props: { job: JobData }) {
         <h5 className="text-bold text-xl flex flex-row flex-wrap">
           Location: {locations}
         </h5>
+        <h5 className="text-bold text-xl">Industry: {props.job.jobIndustry}</h5>
         <h6 className="text-bold text-xl">
           {props.job.wage.provided
             ? `Pay range: ${props.job.wage.salaryMin} - ${props.job.wage.salaryMax}`

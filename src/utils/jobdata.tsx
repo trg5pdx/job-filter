@@ -36,6 +36,15 @@ export interface Pay {
   currency?: string
 }
 
+export enum Region {
+  USA,
+  Canada,
+  UK,
+  APAC,
+  EMEA,
+  Anywhere,
+}
+
 export class JobData {
   title: string
   desc: [string]

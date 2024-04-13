@@ -35,8 +35,18 @@ export interface Paragraph {
   text: [string]
 }
 
+export function filter_jobs(jobs: [JobData], query: Query) {
+  return jobs.filter((job) => {
+    return (
+      check_wage(job, query.wage) &&
+      check_companies(job, query.companies) &&
+      check_location(job, query.location) &&
+      check_industries(job, query.industry)
+    )
+  })
+}
+
 export function check_wage(job: JobData, wage: Pay): boolean {
-  // For the case where the user doesn't care about pay
   if (wage == null || !wage.provided) {
     return true
   }
@@ -60,8 +70,52 @@ export function check_wage(job: JobData, wage: Pay): boolean {
   return false
 }
 
-export function filter_jobs(jobs: [JobData], query: Query) {
-  return jobs.filter((job) => {
-    return check_wage(job, query.wage)
-  })
+export function check_companies(job: JobData, companies: string) {
+  if (!companies) {
+    return true
+  }
+  for (const company of companies.split(',')) {
+    if (company == null || job.company.toLowerCase() == company.toLowerCase()) {
+      return true
+    }
+  }
+
+  return false
+}
+
+export function check_location(job: JobData, locations: string) {
+  if (!locations) {
+    return true
+  }
+
+  for (const jobLocation of job.location) {
+    if (jobLocation == 'Anywhere') {
+      return true
+    }
+    for (const queryLocation of locations.split(',')) {
+      if (jobLocation.toLowerCase() == queryLocation.toLowerCase()) {
+        return true
+      }
+    }
+  }
+
+  return false
+}
+
+export function check_industries(job: JobData, industries: [Industry]) {
+  if (industries == undefined || industries.length == 0) {
+    return true
+  }
+
+  for (const jobIndustry of job.jobIndustry) {
+    for (const queryIndustry of industries) {
+      console.log(jobIndustry, queryIndustry)
+      console.log('AAAAA')
+      if (jobIndustry == queryIndustry) {
+        return true
+      }
+    }
+  }
+
+  return false
 }
