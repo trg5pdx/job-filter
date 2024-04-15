@@ -22,12 +22,12 @@ export function Input(props: {
 export function Checkbox(props: {
   id: string;
   title: string;
-  value: bool;
+  value: boolean;
   onClick: () => void;
   className: string;
 }) {
   return (
-    <label htmlFor={props.id} classsName={props.className}>
+    <label htmlFor={props.id} className={props.className}>
       <input type="checkbox" checked={props.value} onClick={props.onClick} />
       {" " + props.title}
     </label>

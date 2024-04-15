@@ -109,8 +109,6 @@ export function check_industries(job: JobData, industries: [Industry]) {
 
   for (const jobIndustry of job.jobIndustry) {
     for (const queryIndustry of industries) {
-      console.log(jobIndustry, queryIndustry)
-      console.log('AAAAA')
       if (jobIndustry == queryIndustry) {
         return true
       }

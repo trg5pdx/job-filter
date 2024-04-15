@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks'
-import { Industry } from '../utils/jobdata'
+import { Industry, IndustryNum } from '../utils/jobdata'
 import { Checkbox } from './textbox'
 import Modal from './modal'
 
@@ -15,18 +15,19 @@ export default function IndustrySelect(props: {
     const breakpoint = 700
    * */
   const industries = (
-    Object.keys(Industry) as Array<keyof typeof Industry>
+    Object.keys(Industry)
   ).map((val, key) => {
     return (
       <Checkbox
         key={key}
         id={key.toString()}
-        title={Industry[val]}
+        title={Object.values(Industry)[key]} /* Do this better, this seems inefficient*/
         value={props.industry[key]}
         onClick={() => {
           props.setIndustry(key)
           console.log(props.industry, key)
         }}
+        className='pb-2 pt-2'
       />
     )
   })

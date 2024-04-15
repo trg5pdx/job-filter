@@ -9,7 +9,7 @@ export default function Card(props: { job: JobData }) {
     return (
       <div
         key={key}
-        className="rounded-lg bg-slate-300 text-black w-fit p-1 m-1"
+        className="rounded-lg bg-slate-200 text-black dark:bg-slate-600 dark:text-white w-fit p-1 m-1"
       >
         {val}
       </div>

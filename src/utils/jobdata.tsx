@@ -19,13 +19,16 @@ export enum Industry {
   HRRecruiting = 'HR & Recruiting',
   MarketingSales = 'Marketing & Sales',
   ProductOperations = 'Product & Operations',
-  Programming = 'Programming',
+  Programming = 'Software Engineering',
   Sales = 'Sales',
   SEO = 'SEO',
   SocialMediaMarketing = 'Social Media Marketing',
   TechnicalSupport = 'Technical Support',
-  WebAppDesign = 'Web & App Design',
+  WebAppDesign = "Web & App Design",
 }
+// Wanted to have this be based on the size of the Industry enum but kept running into issues with it
+export const IndustryNum = 16;
+
 
 export interface Pay {
   provided: boolean

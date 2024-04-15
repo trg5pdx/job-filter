@@ -51,7 +51,7 @@ export function App() {
   }, [query])
 
   return (
-    <div>
+    <div className="dark:bg-slate-700 bg-slate-200">
       <SearchQuery query={query} setQuery={setQuery} />
       <JobListings query={query} />
       {/* <Modal

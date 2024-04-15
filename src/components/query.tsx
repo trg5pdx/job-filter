@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import { Input, Checkbox } from './textbox'
 import IndustrySelect from './industryselect'
-import { Industry } from '../utils/jobdata'
+import { Industry, IndustryNum } from '../utils/jobdata'
 import { jobBoards, workOptions, Query } from '../utils/query'
 import WorkChoice from './workChoice'
 
@@ -23,7 +23,7 @@ export default function SearchQuery(props: {
     location: '',
     board: [jobBoards.Jobicy],
   })
-  const [industry, setIndustry] = useState(new Array(16).fill(false))
+  const [industry, setIndustry] = useState(new Array(IndustryNum).fill(false))
   const [viewIndustry, setViewIndustry] = useState(false)
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function SearchQuery(props: {
   }
 
   return (
-    <section className="w-full bg-slate-600 pb-5">
+    <section className="w-full dark:bg-slate-600 bg-slate-300 pb-5">
       <form
         className="p-4 grid"
         onSubmit={(e) => {
@@ -71,14 +71,13 @@ export default function SearchQuery(props: {
           if (search.board_jobicy) {
             job_boards.push(jobBoards.Jobicy)
           }
-          // FIX THIS; struggling to convert the array of bools into enums properly
-          for (let i = 0; i < industry.length; ++i) {
+          for (let i = 0; i < IndustryNum; ++i) {
             if (industry[i]) {
-              job_industry.push(industry[i])
+              // I dislike this, come back and do it better
+              job_industry.push(Object.values(Industry)[i])
             }
           }
 
-          console.log(job_industry)
           props.setQuery({
             search: search.search,
             wage: formatWage(search.pay_min, search.pay_max),
@@ -176,7 +175,7 @@ export default function SearchQuery(props: {
             className={checkStyle}
           />
         </div>
-        <button type="submit" className="bg-slate-900 rounded-md p-2 mt-2 mb-2">
+        <button type="submit" className="dark:bg-slate-900 dark:text-white bg-slate-400 text-black rounded-md p-2 mt-2 mb-2">
           Submit Search
         </button>
       </form>
