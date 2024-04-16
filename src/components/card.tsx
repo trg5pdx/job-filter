@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks'
 import { JobData } from '../utils/jobdata'
+import { Description } from './description'
 
 export default function Card(props: { job: JobData }) {
   const [details, openDetails] = useState(false)
@@ -45,6 +46,8 @@ export default function Card(props: { job: JobData }) {
         <div className="transition col-span-7">
           <hr className="m-6" />
           <h6>{props.job.companyDesc}</h6>
+          <hr className="m-6" />
+          <Description test="AAA" />
           <hr className="m-6" />
           <p>{props.job.desc}</p>
           <hr className="m-6" />

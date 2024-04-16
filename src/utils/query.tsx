@@ -21,20 +21,6 @@ export interface Query {
   board?: [jobBoards]
 }
 
-export interface Header {
-  heading: number
-  title: string
-}
-
-export interface List {
-  title: string
-  items: [string]
-}
-
-export interface Paragraph {
-  text: [string]
-}
-
 export function filter_jobs(jobs: [JobData], query: Query) {
   return jobs.filter((job) => {
     return (

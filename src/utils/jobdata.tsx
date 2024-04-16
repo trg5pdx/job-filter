@@ -24,11 +24,10 @@ export enum Industry {
   SEO = 'SEO',
   SocialMediaMarketing = 'Social Media Marketing',
   TechnicalSupport = 'Technical Support',
-  WebAppDesign = "Web & App Design",
+  WebAppDesign = 'Web & App Design',
 }
 // Wanted to have this be based on the size of the Industry enum but kept running into issues with it
-export const IndustryNum = 16;
-
+export const IndustryNum = 16
 
 export interface Pay {
   provided: boolean
@@ -46,6 +45,47 @@ export enum Region {
   APAC,
   EMEA,
   Anywhere,
+}
+
+/* 
+Got the idea for using variant from here:
+https://www.typescriptsos.com/basics/switch-for-specific-type-in-typescript/
+*/
+export interface Header {
+  variant: 'Header'
+  title: string
+  level: number
+  // Revise this later to restrict it to 1-6
+}
+
+export interface List {
+  variant: 'List'
+  title: string
+  children: (string | List)[]
+}
+
+export interface Body {
+  variant: 'Body'
+  paragraph: string
+}
+
+export class DescriptionBody {
+  tags: (Header | List | Body)[]
+
+  constructor(text: string) {
+    this.tags = [
+      { variant: 'Header', title: text, level: 5 },
+      {
+        variant: 'List',
+        title: 'list1',
+        children: ['child1', 'child2', 'child3'],
+      },
+      {
+        variant: 'Body',
+        paragraph: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, quos commodi iusto cumque tempore repellendus ut dignissimos magni unde illum! Adipisci accusantium, temporibus odit aut saepe velit consequatur deleniti eum!`,
+      },
+    ]
+  }
 }
 
 export class JobData {

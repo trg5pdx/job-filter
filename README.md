@@ -32,7 +32,7 @@ qualified for, and would be more interested in.
 
 - [ ] Get the search query to actually send a query to the related job sites,
       and then filter based on their settings
-- [ ] Add a search field for filtering based on industry
+- [x] Add a search field for filtering based on industry
 - [x] Filter out punctuation that ends up as code and replace it with the
       appropriate punctuation
   - [ ] Support hexadecimal codes
@@ -44,6 +44,9 @@ qualified for, and would be more interested in.
   - [ ] Add controls for blocking out specific industries form a search
   - [ ] Save the blocked companies into the users browser, and allow for them
         to manage the block list and remove companies/industries as needed
+- [ ] Clean up code style and making naming scheme for functions, classes,
+      vars, etc. consistent (I've been using camel case and underscores
+      interchangably, oops)
 - Long term:
   - [ ] Maybe build a backend and database and have the backend make the
         requests, and save the results in the database to prevent job listings
