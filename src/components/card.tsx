@@ -47,7 +47,7 @@ export default function Card(props: { job: JobData }) {
           <hr className="m-6" />
           <h6>{props.job.companyDesc}</h6>
           <hr className="m-6" />
-          <Description test="AAA" />
+          <Description data={props.job.newDesc} />
           <hr className="m-6" />
           <p>{props.job.desc}</p>
           <hr className="m-6" />

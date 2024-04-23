@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { JobData, Pay } from './jobdata'
+import { JobData, Pay, Header, List, Body } from './jobdata'
 
 // Decided to split this off for testing later
 // Also would like to revise this to be able to handle hexadecimal codes
@@ -13,16 +13,12 @@ function strip_HTML(description: string) {
   // console.log("before: ");
   // console.log(description);
   // rule for selecting between two chars: https://stackoverflow.com/a/3335593
-  const divRemoved = description.replaceAll(/(<\/?div([^>]*)>)+/g, '')
   // const ulRule = /((?<=<ul>)[\s\S]*?(?=<\/ul>))+/g
   // const liRule = /((?<=<li>)[\s\S]*?(?=<\/li>))+/g
   // LEFT OFF WORKING ON TAG RULE, I want to iterate through get different tags
-  const tagRule = /((?<=<[\s\S]>*?)[\s\S]*?(?=<\/[\s\S]>))+/g
+  // /((<\/?[\s\S]+?>((.*)<\/[\s\S]+?>)?))([\s\S]*)+/g
 
-  const newList = tagRule.exec(divRemoved)
-  if (newList) {
-    console.log(newList)
-  }
+  console.log('===== LOOP =======')
 
   /* const lists = ulRule.exec(divRemoved)
   console.log(lists)
@@ -51,7 +47,6 @@ export async function GetJobListings() {
             currency: val.salaryCurrency,
           }
 
-    // strip_HTML(val.jobDescription)
     let job = new JobData(
       val.jobTitle,
       val.jobDescription,

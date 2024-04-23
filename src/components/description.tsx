@@ -1,9 +1,7 @@
 import { DescriptionBody, Header, List, Body } from '../utils/jobdata'
 
-export function Description(props: { test: string }) {
-  const test = new DescriptionBody('test')
-
-  const selectHeadingLevel = (data: Heading) => {
+export function Description(props: { data: DescriptionBody }) {
+  const selectHeadingLevel = (data: Header) => {
     switch (data.level) {
       case 1:
         return <h1>{data.title}</h1>
@@ -20,7 +18,7 @@ export function Description(props: { test: string }) {
     }
   }
 
-  const processedText = (tags: [Header | List | Body]) => {
+  const processedText = (tags: (Header | List | Body)[]) => {
     return tags.map((val: Header | List | Body) => {
       switch (val.variant) {
         case 'Header':
@@ -47,5 +45,7 @@ export function Description(props: { test: string }) {
 
   // console.log(processedText(test))
 
-  return <div>{processedText(test.tags)}</div>
+  console.log(`data: ${props.data.tags}`)
+
+  return <div>{processedText(props.data.tags)}</div>
 }
