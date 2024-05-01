@@ -5,23 +5,21 @@ import SearchQuery from './components/query'
 // import Modal from './components/modal'
 import { GetJobListings } from './utils/listings'
 import { Query, filter_jobs } from './utils/query'
-// import { Pay } from './utils/jobdata'
+import { JobData } from './utils/jobdata'
 import './style.css'
 
 function JobListings(props: { query: Query }) {
-  const [jobs, setJobs] = useState([])
-  const [pulledJobs, setPulledJobs] = useState([])
+  const [jobs, setJobs] = useState<JobData[]>([])
+  const [pulledJobs, setPulledJobs] = useState<JobData[]>([])
   const [loading, setLoading] = useState(true)
 
-  const format_jobs = (jobs) => {
-    return jobs.map((job, key) => {
-      return (
-        <li key={key}>
-          <Card key={job.id} job={job} />
-        </li>
-      )
-    })
-  }
+  const jobsFormatted = jobs.map((job, key) => {
+    return (
+      <li key={key}>
+        <Card job={job} />
+      </li>
+    )
+  })
 
   useEffect(() => {
     GetJobListings().then((val) => {
@@ -33,12 +31,10 @@ function JobListings(props: { query: Query }) {
 
   useEffect(() => {
     let filtered = filter_jobs(pulledJobs, props.query)
-    // console.log(filtered)
     setJobs(filtered)
-    // console.log(pulledJobs, filtered)
-  }, [props.query])
+  }, [props.query, pulledJobs])
 
-  return <div>{loading ? <p>loading...</p> : <ul>{format_jobs(jobs)}</ul>}</div>
+  return <div>{loading ? <p>loading...</p> : <ul>{jobsFormatted}</ul>}</div>
 }
 
 export function App() {

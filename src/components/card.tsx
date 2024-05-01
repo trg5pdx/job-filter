@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { JobData } from '../utils/jobdata'
-import { Description } from './description'
+import htmr from 'htmr'
 
 export default function Card(props: { job: JobData }) {
   const [details, openDetails] = useState(false)
@@ -47,9 +47,9 @@ export default function Card(props: { job: JobData }) {
           <hr className="m-6" />
           <h6>{props.job.companyDesc}</h6>
           <hr className="m-6" />
-          <Description data={props.job.newDesc} />
-          <hr className="m-6" />
-          <p>{props.job.desc}</p>
+          <p className={`[&_ul]:list-disc [&_li]:ml-4`}>
+            {htmr(props.job.desc)}
+          </p>
           <hr className="m-6" />
           <div className="flex justify-between">
             <a

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { Input, Checkbox } from './textbox'
 import IndustrySelect from './industryselect'
 import { Industry, IndustryNum } from '../utils/jobdata'
@@ -21,14 +21,10 @@ export default function SearchQuery(props: {
     workChoice: [],
     board_jobicy: true,
     location: '',
-    board: [jobBoards.Jobicy],
+    board: [jobBoards.Jobicy]
   })
   const [industry, setIndustry] = useState(new Array(IndustryNum).fill(false))
   const [viewIndustry, setViewIndustry] = useState(false)
-
-  useEffect(() => {
-    industry
-  }, [industry])
 
   const isValid = (x: string) => {
     if (x == undefined || isNaN(parseInt(x, 10))) {
@@ -45,18 +41,18 @@ export default function SearchQuery(props: {
     if (!isValid(payMax)) {
       return {
         provided: true,
-        salaryMin: parseInt(payMin, 10),
+        salaryMin: parseInt(payMin, 10)
       }
     } else if (!isValid(payMin)) {
       return {
         provided: true,
-        salaryMax: parseInt(payMax, 10),
+        salaryMax: parseInt(payMax, 10)
       }
     }
     return {
       provided: true,
       salaryMin: parseInt(payMin, 10),
-      salaryMax: parseInt(payMax, 10),
+      salaryMax: parseInt(payMax, 10)
     }
   }
 
@@ -85,7 +81,7 @@ export default function SearchQuery(props: {
             options: search.workChoice,
             location: search.location,
             industry: job_industry,
-            board: job_boards,
+            board: job_boards
           })
         }}
       >
@@ -107,6 +103,7 @@ export default function SearchQuery(props: {
             onChange={(val) => {
               setSearch({ ...search, pay_min: val })
             }}
+            className={''}
           />
           <Input
             id="pay_max"
@@ -115,6 +112,7 @@ export default function SearchQuery(props: {
             onChange={(val) => {
               setSearch({ ...search, pay_max: val })
             }}
+            className={''}
           />
         </div>
         <Input
@@ -140,7 +138,7 @@ export default function SearchQuery(props: {
           setChoice={(val: [workOptions]) => {
             setSearch({
               ...search,
-              workChoice: val,
+              workChoice: val
             })
           }}
         />
@@ -155,7 +153,7 @@ export default function SearchQuery(props: {
               setIndustry={(key: number) => {
                 setIndustry({
                   ...industry,
-                  [key]: !industry[key],
+                  [key]: !industry[key]
                 })
               }}
             />
@@ -175,7 +173,10 @@ export default function SearchQuery(props: {
             className={checkStyle}
           />
         </div>
-        <button type="submit" className="dark:bg-slate-900 dark:text-white bg-slate-400 text-black rounded-md p-2 mt-2 mb-2">
+        <button
+          type="submit"
+          className="dark:bg-slate-900 dark:text-white bg-slate-400 text-black rounded-md p-2 mt-2 mb-2"
+        >
           Submit Search
         </button>
       </form>

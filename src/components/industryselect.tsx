@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'preact/hooks'
-import { Industry, IndustryNum } from '../utils/jobdata'
+// import { useState, useEffect } from 'preact/hooks'
+import { Industry } from '../utils/jobdata'
 import { Checkbox } from './textbox'
-import Modal from './modal'
+// import Modal from './modal'
 
 export default function IndustrySelect(props: {
-  industry: [boolean]
+  industry: boolean[]
   setIndustry: (arg0: number) => void
 }) {
   // const [select, setSelect] = useState(new Array(16).fill(false))
@@ -14,20 +14,21 @@ export default function IndustrySelect(props: {
     const [viewModal, setViewModal] = useState(false)
     const breakpoint = 700
    * */
-  const industries = (
-    Object.keys(Industry)
-  ).map((val, key) => {
+  const industries = Object.keys(Industry).map((val, key) => {
+    console.log(val)
     return (
       <Checkbox
         key={key}
         id={key.toString()}
-        title={Object.values(Industry)[key]} /* Do this better, this seems inefficient*/
+        title={
+          Object.values(Industry)[key]
+        } /* Do this better, this seems inefficient*/
         value={props.industry[key]}
         onClick={() => {
           props.setIndustry(key)
           console.log(props.industry, key)
         }}
-        className='pb-2 pt-2'
+        className="pb-2 pt-2"
       />
     )
   })

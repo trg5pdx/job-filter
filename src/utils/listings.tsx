@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { JobData, Pay, Header, List, Body } from './jobdata'
+import { JobData, Pay } from './jobdata'
 
 // Decided to split this off for testing later
 // Also would like to revise this to be able to handle hexadecimal codes
@@ -7,27 +7,6 @@ function fix_unicode(excerpt: string) {
   return excerpt.replace(/(&#)(\d{4})+/g, (x, y, z) => {
     return String.fromCodePoint(Number(z))
   })
-}
-
-function strip_HTML(description: string) {
-  // console.log("before: ");
-  // console.log(description);
-  // rule for selecting between two chars: https://stackoverflow.com/a/3335593
-  // const ulRule = /((?<=<ul>)[\s\S]*?(?=<\/ul>))+/g
-  // const liRule = /((?<=<li>)[\s\S]*?(?=<\/li>))+/g
-  // LEFT OFF WORKING ON TAG RULE, I want to iterate through get different tags
-  // /((<\/?[\s\S]+?>((.*)<\/[\s\S]+?>)?))([\s\S]*)+/g
-
-  console.log('===== LOOP =======')
-
-  /* const lists = ulRule.exec(divRemoved)
-  console.log(lists)
-  if (lists) {
-    const list_items = lists.map((item) => {
-      liRule.exec(item)
-    })
-    console.log(list_items)
-  } */
 }
 
 export async function GetJobListings() {

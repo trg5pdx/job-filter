@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'preact/hooks'
+// import { useState, useEffect } from 'preact/hooks'
 
 export default function Modal(props: {
-  viewModal: bool
+  viewModal: boolean
   setModalView: () => void
   buttonText: string
   child: object

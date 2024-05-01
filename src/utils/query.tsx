@@ -1,14 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { Pay, Industry, JobData } from './jobdata'
 
 export enum workOptions {
   Remote,
   Hybrid,
-  InPerson,
+  InPerson
 }
 
 export enum jobBoards {
   Jobicy,
-  Other,
+  Other
 }
 
 export interface Query {
@@ -21,7 +22,7 @@ export interface Query {
   board?: [jobBoards]
 }
 
-export function filter_jobs(jobs: [JobData], query: Query) {
+export function filter_jobs(jobs: JobData[], query: Query) {
   return jobs.filter((job) => {
     return (
       check_wage(job, query.wage) &&
@@ -88,7 +89,7 @@ export function check_location(job: JobData, locations: string) {
   return false
 }
 
-export function check_industries(job: JobData, industries: [Industry]) {
+export function check_industries(job: JobData, industries: Industry[]) {
   if (industries == undefined || industries.length == 0) {
     return true
   }

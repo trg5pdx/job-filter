@@ -36,7 +36,8 @@ qualified for, and would be more interested in.
 - [x] Filter out punctuation that ends up as code and replace it with the
       appropriate punctuation
   - [ ] Support hexadecimal codes
-- [ ] Parse the html from jobicy postings and put it into its own class
+        ~~- [ ] Parse the html from jobicy postings and put it into its own class~~
+- [x] HTML sanitized and displayed correctly within a card
 - [ ] Parse the job postings and pull information like YOE from them
   - [ ] Add a YOE field into the search form
 - [ ] Save searches into the users browser so they can go back to them later

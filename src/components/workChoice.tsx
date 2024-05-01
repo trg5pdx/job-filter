@@ -4,13 +4,13 @@ import { workOptions } from '../utils/query'
 
 const checkStyle = `pt-2 pb-2`
 export default function WorkChoice(props: {
-  choice: [workOptions]
-  setChoice: ([workOptions]) => void
+  choice: workOptions[]
+  setChoice: (arg0: workOptions[]) => void
 }) {
   const [options, setOptions] = useState({
     remote: true,
     hybrid: true,
-    inperson: true,
+    inperson: true
   })
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function WorkChoice(props: {
           }
         })
     )
-  }, [options])
+  }, [options, props])
 
   return (
     <div>
@@ -39,7 +39,7 @@ export default function WorkChoice(props: {
         onClick={() => {
           setOptions({
             ...options,
-            remote: !options.remote,
+            remote: !options.remote
           })
         }}
         className={checkStyle}
@@ -51,7 +51,7 @@ export default function WorkChoice(props: {
         onClick={() => {
           setOptions({
             ...options,
-            hybrid: !options.hybrid,
+            hybrid: !options.hybrid
           })
         }}
         className={checkStyle}
@@ -63,7 +63,7 @@ export default function WorkChoice(props: {
         onClick={() => {
           setOptions({
             ...options,
-            inperson: !options.inperson,
+            inperson: !options.inperson
           })
         }}
         className={checkStyle}
