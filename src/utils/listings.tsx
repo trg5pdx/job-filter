@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { JobData, Pay } from './jobdata'
+import { JobData, Pay, WorkOptions } from './jobdata'
 
 // Decided to split this off for testing later
 // Also would like to revise this to be able to handle hexadecimal codes
@@ -17,15 +17,14 @@ export async function GetJobListings() {
     let wage: Pay =
       val.annualSalaryMin == undefined
         ? {
-            provided: false,
+            provided: false
           }
         : {
             provided: true,
             salaryMin: parseInt(val.annualSalaryMin, 10),
             salaryMax: parseInt(val.annualSalaryMax, 10),
-            currency: val.salaryCurrency,
+            currency: val.salaryCurrency
           }
-
     let job = new JobData(
       val.jobTitle,
       val.jobDescription,
@@ -34,6 +33,7 @@ export async function GetJobListings() {
       val.url,
       val.companyLogo,
       val.jobGeo.split(', ').map((val: string) => val.trim()),
+      WorkOptions.Remote,
       'Jobicy',
       wage,
       val.pubDate,

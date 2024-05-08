@@ -1,11 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Pay, Industry, JobData } from './jobdata'
-
-export enum workOptions {
-  Remote,
-  Hybrid,
-  InPerson
-}
+import { Pay, Industry, JobData, WorkOptions } from './jobdata'
 
 export enum jobBoards {
   Jobicy,
@@ -14,9 +8,13 @@ export enum jobBoards {
 
 export interface Query {
   search: string
+  excluded_title?: string
+  excluded_desc?: string
   wage?: Pay
   companies?: string
-  options?: [workOptions]
+  remote: boolean
+  hybrid: boolean
+  inperson: boolean
   location?: string
   industry?: [Industry]
   board?: [jobBoards]
@@ -25,12 +23,64 @@ export interface Query {
 export function filter_jobs(jobs: JobData[], query: Query) {
   return jobs.filter((job) => {
     return (
+      check_work_options(job, query.remote, query.hybrid, query.inperson) &&
+      !exclude_job(job, query.excluded_title, query.excluded_desc) &&
       check_wage(job, query.wage) &&
       check_companies(job, query.companies) &&
       check_location(job, query.location) &&
       check_industries(job, query.industry)
     )
   })
+}
+
+export function check_work_options(
+  job: JobData,
+  remote: boolean,
+  hybrid: boolean,
+  inperson: boolean
+) {
+  switch (job.locationOption) {
+    case WorkOptions.Remote:
+      return remote
+    case WorkOptions.Hybrid:
+      return hybrid
+    case WorkOptions.Inperson:
+      return inperson
+    default:
+      return false
+  }
+}
+
+/* 
+Obtained the regex for matching a specific word regardless of case from:
+https://superuser.com/questions/903168/how-should-i-write-a-regex-to-match-a-specific-word#903175
+*/
+export function exclude_job(
+  job: JobData,
+  excluded_title: string,
+  excluded_desc: string
+) {
+  const compare_terms = (exclude_term, source_term) => {
+    for (const term of exclude_term.split(',')) {
+      const regex = new RegExp(`(?:^|\\W)${term.trim()}(?:$|\\W)`, 'gim')
+      if (regex.test(source_term)) {
+        return true
+      }
+    }
+  }
+
+  if (excluded_title != '' && excluded_title != undefined) {
+    if (compare_terms(excluded_title, job.title)) {
+      return true
+    }
+  }
+  if (excluded_desc != '' && excluded_desc != undefined) {
+    if (compare_terms(excluded_desc, job.desc)) {
+      return true
+    }
+  }
+
+  return false
 }
 
 export function check_wage(job: JobData, wage: Pay): boolean {

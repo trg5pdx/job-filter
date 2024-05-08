@@ -38,13 +38,14 @@ function JobListings(props: { query: Query }) {
 }
 
 export function App() {
-  const [query, setQuery] = useState<Query>({ search: '' })
+  const [query, setQuery] = useState<Query>({
+    search: '',
+    remote: true,
+    hybrid: true,
+    inperson: true
+  })
   /* const [modalView, setModalView] = useState(false)
   const [modalChild, setModalChild] = useState(<></>) */
-
-  useEffect(() => {
-    console.log(query)
-  }, [query])
 
   return (
     <div className="dark:bg-slate-700 bg-slate-200">

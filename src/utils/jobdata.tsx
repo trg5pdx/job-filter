@@ -49,6 +49,12 @@ export enum Region {
   Anywhere
 }
 
+export enum WorkOptions {
+  Remote,
+  Hybrid,
+  Inperson
+}
+
 export class JobData {
   title: string
   desc: string
@@ -57,6 +63,7 @@ export class JobData {
   link: string
   logo: string
   location: [string]
+  locationOption: WorkOptions
   jobBoard: jobBoards
   wage: Pay
   postDate: string
@@ -71,6 +78,7 @@ export class JobData {
     link: string,
     logo: string,
     location: [string],
+    locationOption: WorkOptions,
     jobBoard: string,
     wage: Pay,
     postDate: string,
@@ -84,6 +92,7 @@ export class JobData {
     this.link = link
     this.logo = logo
     this.location = location
+    this.locationOption = locationOption
     this.wage = wage
     this.postDate = postDate
     this.jobIndustry = jobIndustry
