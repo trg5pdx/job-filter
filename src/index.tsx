@@ -34,7 +34,11 @@ function JobListings(props: { query: Query }) {
     setJobs(filtered)
   }, [props.query, pulledJobs])
 
-  return <div>{loading ? <p>loading...</p> : <ul>{jobsFormatted}</ul>}</div>
+  return (
+    <div className="m-4">
+      {loading ? <p>loading...</p> : <ul>{jobsFormatted}</ul>}
+    </div>
+  )
 }
 
 export function App() {
@@ -48,9 +52,11 @@ export function App() {
   const [modalChild, setModalChild] = useState(<></>) */
 
   return (
-    <div className="dark:bg-slate-700 bg-slate-200">
+    <div className="lg:grid lg:grid-cols-4">
       <SearchQuery query={query} setQuery={setQuery} />
-      <JobListings query={query} />
+      <div className="lg:col-span-3">
+        <JobListings query={query} />
+      </div>
       {/* <Modal
         viewModal={modalView}
         setModalView={() => setModalView(!modalView)}

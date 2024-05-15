@@ -18,7 +18,10 @@ export default function Card(props: { job: JobData }) {
   })
 
   return (
-    <li className="m-5 p-5 dark:bg-slate-900 bg-slate-300 dark:text-white text-black rounded grid grid-cols-7">
+    <li
+      className={`mb-5 p-5 dark:bg-slate-900 bg-slate-300 dark:text-white 
+       text-black grid grid-cols-7 rounded-xl border-2 border-slate-500`}
+    >
       <img
         src={props.job.logo}
         className="row-span-2 scale-75 rounded-2xl z-20"

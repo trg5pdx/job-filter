@@ -6,14 +6,11 @@ export default function IndustrySelect(props: {
   setIndustry: (arg0: number) => void
 }) {
   const industries = Object.keys(Industry).map((val, key) => {
-    console.log(val)
+    console.log(val, key)
     return (
       <Checkbox
         key={key}
-        id={key.toString()}
-        title={
-          Object.values(Industry)[key]
-        } /* Do this better, this seems inefficient*/
+        id={val.toLowerCase()}
         value={props.industry[key]}
         onClick={() => {
           props.setIndustry(key)

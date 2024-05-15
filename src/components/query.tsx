@@ -75,9 +75,9 @@ export default function SearchQuery(props: {
   }
 
   return (
-    <section className="w-full dark:bg-slate-600 bg-slate-300 pb-5">
+    <section className="w-full ">
       <form
-        className="p-4 grid"
+        className="p-4 grid dark:bg-slate-600 bg-slate-300 pb-5 m-4 rounded-xl border-slate-800 border-2"
         onSubmit={(e) => {
           e.preventDefault()
           let job_boards = []
@@ -129,18 +129,23 @@ export default function SearchQuery(props: {
           />
         </div>
         <div>
-          <Input
-            id="pay_min"
-            value={search.pay_min}
-            inputType={'number'}
-            onChange={changeSearch}
-          />
-          <Input
-            id="pay_max"
-            value={search.pay_max}
-            inputType={'number'}
-            onChange={changeSearch}
-          />
+          {`Pay Information: `}
+          <div className="pb-2">
+            <Input
+              id="pay_min"
+              value={search.pay_min}
+              inputType={'number'}
+              onChange={changeSearch}
+            />
+          </div>
+          <div className="pb-2">
+            <Input
+              id="pay_max"
+              value={search.pay_max}
+              inputType={'number'}
+              onChange={changeSearch}
+            />
+          </div>
         </div>
         <Input
           id="companies"
@@ -157,25 +162,25 @@ export default function SearchQuery(props: {
         <div>
           <Checkbox
             id="remote"
-            title="Remote"
             value={search.remote}
             onClick={changeWorkOptions}
           />
           <Checkbox
             id="hybrid"
-            title="Hybrid"
             value={search.hybrid}
             onClick={changeWorkOptions}
           />
           <Checkbox
             id="inperson"
-            title="Inperson"
             value={search.inperson}
             onClick={changeWorkOptions}
           />
         </div>
         <div>
-          <button onClick={() => setViewIndustry(!viewIndustry)}>
+          <button
+            onClick={() => setViewIndustry(!viewIndustry)}
+            className={'rounded bg-slate-900 p-1'}
+          >
             <label>{'Industries '}</label>
             {'>'}
           </button>
@@ -197,7 +202,6 @@ export default function SearchQuery(props: {
           {'Boards to pull from: '}
           <Checkbox
             id="jobicy"
-            title="Jobicy (Remote Only)"
             value={search.board_jobicy}
             onClick={() => {
               setSearch({ ...search, board_jobicy: !search.board_jobicy })
