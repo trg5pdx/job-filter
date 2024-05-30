@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks'
 import { JobData } from '../utils/jobdata'
+import { Button } from './inputs'
 import htmr from 'htmr'
 
 export default function Card(props: { job: JobData }) {
@@ -10,7 +11,8 @@ export default function Card(props: { job: JobData }) {
     return (
       <div
         key={key}
-        className="rounded-lg bg-slate-200 text-black dark:bg-slate-600 dark:text-white w-fit p-1 m-1"
+        className={`rounded-lg bg-seconary-400 text-black dark:bg-secondary-700 
+        dark:text-white w-fit p-1 m-1`}
       >
         {val}
       </div>
@@ -19,8 +21,9 @@ export default function Card(props: { job: JobData }) {
 
   return (
     <li
-      className={`mb-5 p-5 dark:bg-slate-900 bg-slate-300 dark:text-white 
-       text-black grid grid-cols-7 rounded-xl border-2 border-slate-500`}
+      className={`mb-5 p-5 dark:bg-primary-900 bg-primary-300 dark:text-white 
+       text-black grid grid-cols-7 rounded-xl border-2 
+       dark:border-secondary-500 border-secondary-900`}
     >
       <img
         src={props.job.logo}
@@ -61,12 +64,11 @@ export default function Card(props: { job: JobData }) {
             >
               Jobicy posting
             </a>
-            <button
-              className="rounded bg-slate-600 p-2"
+            <Button
+              id="close"
+              child="Close Description"
               onClick={() => openDetails(!details)}
-            >
-              Close Description
-            </button>
+            />
           </div>
         </div>
       ) : (

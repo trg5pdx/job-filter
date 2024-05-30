@@ -1,35 +1,53 @@
 import { JSXInternal } from 'node_modules/preact/src/jsx'
 
-export function Input(props: {
+/* 
+Got the idea for how to do optional attributes from:
+https://stackoverflow.com/a/59757984
+*/
+interface TextInput {
   id: string
   value: string
   inputType: string
   onChange: (arg0: JSXInternal.TargetedEvent) => void
-}) {
-  const textBoxStyle = `pt-2 pb-2`
+  readonly?: boolean
+}
+
+export function Input({
+  id,
+  value,
+  inputType,
+  onChange,
+  readonly = false
+}: TextInput) {
   const title = (id: string) => {
     return {
       search: 'Search',
       excluded_title: 'Title',
       excluded_desc: 'Description',
-      pay_min: 'Minimum Pay',
-      pay_max: 'Maximum Pay',
+      salary_min: 'Min. Salary',
+      salary_max: 'Max. Salary',
+      hourly_min: 'Min. Hourly Pay',
+      hourly_max: 'Max. Hourly Pay',
       companies: 'Companies',
       location: 'Job Location'
     }[id]
   }
 
-  const labelText = title(props.id)
+  const labelText = title(id)
+
+  console.log(readonly)
 
   return (
-    <label htmlFor={props.id} className={textBoxStyle}>
+    <label htmlFor={id} className={`pt-2 pb-2 flex flex-col`}>
       {`${labelText}: `}
       <input
-        type={props.inputType}
-        id={props.id}
-        value={props.value}
-        onChange={(event) => props.onChange(event)}
+        type={inputType}
+        id={id}
+        value={value}
+        className={`rounded p-1 border-2 dark:border-secondary-600 `}
+        onChange={(event) => onChange(event)}
         placeholder={labelText}
+        readonly={readonly}
       />
     </label>
   )
@@ -48,6 +66,9 @@ export function Checkbox(props: {
       remote: 'Remote',
       hybrid: 'Hybrid',
       inperson: 'In-Person',
+      // Pay options
+      salary_pay: 'Salary',
+      hourly_pay: 'Hourly Pay',
       // Job Boards
       jobicy: 'Jobicy (Remote Only)',
       // Industry categories
@@ -80,5 +101,28 @@ export function Checkbox(props: {
       />
       {` ${title(props.id)}`}
     </label>
+  )
+}
+
+export function Button(props: {
+  id: string
+  child: string
+  type?: string
+  onClick?: (arg0: JSXInternal.TargetedEvent) => void
+}) {
+  const selectStyle = (id: string) => {
+    return `p-2 mt-2 mb-2 rounded-md dark:bg-secondary-700 bg-secondary-400 
+    dark:text-neutral-100 text-neutral-950`
+  }
+
+  return (
+    <button
+      id={props.id}
+      type={props.type == undefined ? 'button' : props.type}
+      className={selectStyle(props.id)}
+      onClick={props.onClick}
+    >
+      {props.child}
+    </button>
   )
 }

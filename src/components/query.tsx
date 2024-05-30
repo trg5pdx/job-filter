@@ -1,6 +1,7 @@
 import { useState } from 'preact/hooks'
-import { Input, Checkbox } from './inputs'
+import { Input, Checkbox, Button } from './inputs'
 import IndustrySelect from './industryselect'
+import PayInformation from './payinformation'
 import { Industry, IndustryNum } from '../utils/jobdata'
 import { jobBoards, Query } from '../utils/query'
 import { JSXInternal } from 'node_modules/preact/src/jsx'
@@ -14,8 +15,11 @@ export default function SearchQuery(props: {
     excluded_title: '',
     excluded_desc: '',
     pay_range: '',
-    pay_min: '',
-    pay_max: '',
+    salary_min: '',
+    salary_max: '',
+    hourly_min: '',
+    hourly_max: '',
+    allow_blank_pay: true,
     companies: '',
     workChoice: [],
     remote: true,
@@ -26,7 +30,10 @@ export default function SearchQuery(props: {
     board: [jobBoards.Jobicy]
   })
   const [industry, setIndustry] = useState(new Array(IndustryNum).fill(false))
-  const [viewIndustry, setViewIndustry] = useState(false)
+  const [toggleSubmenus, setToggleSubmenus] = useState({
+    industry: false,
+    pay: false
+  })
 
   const isValid = (x: string) => {
     if (x == undefined || isNaN(parseInt(x, 10))) {
@@ -35,26 +42,43 @@ export default function SearchQuery(props: {
     return true
   }
 
-  const formatWage = (payMin: string, payMax: string) => {
-    if (!isValid(payMin) && !isValid(payMax)) {
+  const formatWage = (
+    salary_min: string,
+    salary_max: string,
+    hourly_min: string,
+    hourly_max: string
+  ) => {
+    if (
+      !isValid(salary_min) &&
+      !isValid(salary_max) &&
+      !isValid(hourly_min) &&
+      !isValid(hourly_max)
+    ) {
       return { provided: false }
     }
 
-    if (!isValid(payMax)) {
+    if (!isValid(salary_max) && !isValid(hourly_min) && !isValid(hourly_max)) {
       return {
         provided: true,
-        salaryMin: parseInt(payMin, 10)
+        salaryMin: parseInt(salary_min, 10)
       }
-    } else if (!isValid(payMin)) {
+    } else if (
+      !isValid(salary_min) &&
+      !isValid(hourly_min) &&
+      !isValid(hourly_max)
+    ) {
       return {
         provided: true,
-        salaryMax: parseInt(payMax, 10)
+        salaryMax: parseInt(salary_max, 10)
       }
     }
+
+    // TODO: set up hourly pay logic and add options for choosing one or the other, or neither
+
     return {
       provided: true,
-      salaryMin: parseInt(payMin, 10),
-      salaryMax: parseInt(payMax, 10)
+      salaryMin: parseInt(salary_min, 10),
+      salaryMax: parseInt(salary_max, 10)
     }
   }
 
@@ -74,10 +98,19 @@ export default function SearchQuery(props: {
     })
   }
 
+  const setSubmenuViews = (e: JSXInternal.TargetedEvent) => {
+    let target = e.target as HTMLInputElement
+    setToggleSubmenus({
+      ...toggleSubmenus,
+      [target.id]: !toggleSubmenus[target.id]
+    })
+  }
+
   return (
     <section className="w-full ">
       <form
-        className="p-4 grid dark:bg-slate-600 bg-slate-300 pb-5 m-4 rounded-xl border-slate-800 border-2"
+        className={`p-4 grid dark:bg-primary-900 bg-primary-300 pb-5 m-4 
+        rounded-xl dark:border-secondary-500 border-secondary-900 border-2`}
         onSubmit={(e) => {
           e.preventDefault()
           let job_boards = []
@@ -96,7 +129,12 @@ export default function SearchQuery(props: {
             search: search.search,
             excluded_title: search.excluded_title,
             excluded_desc: search.excluded_desc,
-            wage: formatWage(search.pay_min, search.pay_max),
+            wage: formatWage(
+              search.salary_min,
+              search.salary_max,
+              search.hourly_min,
+              search.hourly_max
+            ),
             companies: search.companies,
             remote: search.remote,
             hybrid: search.hybrid,
@@ -128,25 +166,17 @@ export default function SearchQuery(props: {
             onChange={changeSearch}
           />
         </div>
-        <div>
-          {`Pay Information: `}
-          <div className="pb-2">
-            <Input
-              id="pay_min"
-              value={search.pay_min}
-              inputType={'number'}
-              onChange={changeSearch}
-            />
-          </div>
-          <div className="pb-2">
-            <Input
-              id="pay_max"
-              value={search.pay_max}
-              inputType={'number'}
-              onChange={changeSearch}
-            />
-          </div>
-        </div>
+        <Button id="pay" child="Pay Settings" onClick={setSubmenuViews} />
+        {toggleSubmenus.pay && (
+          <PayInformation
+            salary_min={search.salary_min}
+            salary_max={search.salary_max}
+            hourly_min={search.hourly_min}
+            hourly_max={search.hourly_max}
+            allow_blank_pay={search.allow_blank_pay}
+            changeSearch={changeSearch}
+          />
+        )}
         <Input
           id="companies"
           value={search.companies}
@@ -176,44 +206,31 @@ export default function SearchQuery(props: {
             onClick={changeWorkOptions}
           />
         </div>
-        <div>
-          <button
-            onClick={() => setViewIndustry(!viewIndustry)}
-            className={'rounded bg-slate-900 p-1'}
-          >
-            <label>{'Industries '}</label>
-            {'>'}
-          </button>
-          {viewIndustry ? (
-            <IndustrySelect
-              industry={industry}
-              setIndustry={(key: number) => {
-                setIndustry({
-                  ...industry,
-                  [key]: !industry[key]
-                })
-              }}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
-        <div>
-          {'Boards to pull from: '}
-          <Checkbox
-            id="jobicy"
-            value={search.board_jobicy}
-            onClick={() => {
-              setSearch({ ...search, board_jobicy: !search.board_jobicy })
+        <Button id="industry" child="Industries" onClick={setSubmenuViews} />
+        {toggleSubmenus.industry && (
+          <IndustrySelect
+            industry={industry}
+            setIndustry={(key: number) => {
+              setIndustry({
+                ...industry,
+                [key]: !industry[key]
+              })
             }}
           />
+        )}
+        <div>
+          {'Boards to pull from: '}
+          <div className="flex flex-col">
+            <Checkbox
+              id="jobicy"
+              value={search.board_jobicy}
+              onClick={() => {
+                setSearch({ ...search, board_jobicy: !search.board_jobicy })
+              }}
+            />
+          </div>
         </div>
-        <button
-          type="submit"
-          className="dark:bg-slate-900 dark:text-white bg-slate-400 text-black rounded-md p-2 mt-2 mb-2"
-        >
-          Submit Search
-        </button>
+        <Button id="submit" type="submit" child="Submit Search" />
       </form>
     </section>
   )
