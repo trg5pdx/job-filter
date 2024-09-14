@@ -34,17 +34,18 @@ export function Input({
   }
 
   const labelText = title(id)
-
+  // this feels bad, maybe come back and fix this
+  const readonlyStyle = readonly ? 'line-through hover:cursor-not-allowed' : ''
   console.log(readonly)
 
   return (
-    <label htmlFor={id} className={`pt-2 pb-2 flex flex-col`}>
+    <label htmlFor={id} className={`pt-2 pb-2 flex flex-col ${readonlyStyle}`}>
       {`${labelText}: `}
       <input
         type={inputType}
         id={id}
         value={value}
-        className={`rounded p-1 border-2 dark:border-secondary-600 `}
+        className={`rounded p-1 border-2 dark:border-secondary-600 ${readonlyStyle}`}
         onChange={(event) => onChange(event)}
         placeholder={labelText}
         readonly={readonly}
@@ -58,7 +59,7 @@ export function Checkbox(props: {
   value: boolean
   onClick: (arg0: any) => void
 }) {
-  const checkBoxStyle = `pt-2 pb-2`
+  const checkBoxStyle = `pt-2 pb-2 pr-2`
 
   const title = (id: string) => {
     return {
@@ -67,8 +68,9 @@ export function Checkbox(props: {
       hybrid: 'Hybrid',
       inperson: 'In-Person',
       // Pay options
-      salary_pay: 'Salary',
-      hourly_pay: 'Hourly Pay',
+      allow_salary: 'Salary',
+      allow_hourly: 'Hourly Pay',
+      allow_blank_pay: 'Allow no provided pay',
       // Job Boards
       jobicy: 'Jobicy (Remote Only)',
       // Industry categories
@@ -99,7 +101,7 @@ export function Checkbox(props: {
         checked={props.value}
         onClick={props.onClick}
       />
-      {` ${title(props.id)}`}
+      {`${title(props.id)}`}
     </label>
   )
 }

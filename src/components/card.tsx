@@ -1,7 +1,42 @@
 import { useState } from 'preact/hooks'
-import { JobData } from '../utils/jobdata'
+import { JobData, Pay } from '../utils/jobdata'
 import { Button } from './inputs'
 import htmr from 'htmr'
+
+function format_industries(job_industries: string[]) {
+  return job_industries.flatMap((val, i) => {
+    if (i == job_industries.length - 1) {
+      return val
+    }
+    return val.concat(', ')
+  })
+}
+
+function format_pay(wage: Pay) {
+  if (!wage.provided) {
+    return 'Pay not provided'
+  }
+  // Removed decimal following: https://stackoverflow.com/a/65312353
+  let salaryMin = new Intl.NumberFormat(navigator.language, {
+    style: 'currency',
+    currency: wage.currency,
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
+  }).format(wage.salaryMin)
+
+  if (wage.salaryMax == undefined) {
+    return `Salary: ${salaryMin} and up`
+  }
+
+  let salaryMax = new Intl.NumberFormat(navigator.language, {
+    style: 'currency',
+    currency: wage.currency,
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
+  }).format(wage.salaryMax)
+
+  return `Salary: ${salaryMin} - ${salaryMax}`
+}
 
 export default function Card(props: { job: JobData }) {
   const [details, openDetails] = useState(false)
@@ -18,6 +53,8 @@ export default function Card(props: { job: JobData }) {
       </div>
     )
   })
+  const job_industries = format_industries(props.job.jobIndustry)
+  const wage = format_pay(props.job.wage)
 
   return (
     <li
@@ -35,12 +72,8 @@ export default function Card(props: { job: JobData }) {
         <h5 className="text-bold text-xl flex flex-row flex-wrap">
           Location: {locations}
         </h5>
-        <h5 className="text-bold text-xl">Industry: {props.job.jobIndustry}</h5>
-        <h6 className="text-bold text-xl">
-          {props.job.wage.provided
-            ? `Pay range: ${props.job.wage.salaryMin} - ${props.job.wage.salaryMax}`
-            : 'Pay not provided'}
-        </h6>
+        <h5 className="text-bold text-xl">Industry: {job_industries}</h5>
+        <h6 className="text-bold text-xl">{wage}</h6>
       </div>
       <button
         onClick={() => openDetails(!details)}
@@ -51,9 +84,9 @@ export default function Card(props: { job: JobData }) {
       {details ? (
         <div className="transition col-span-7">
           <hr className="m-6" />
-          <h6>{props.job.companyDesc}</h6>
+          <h6 className="lg:pl-6 lg:pr-6">{props.job.companyDesc}</h6>
           <hr className="m-6" />
-          <p className={`[&_ul]:list-disc [&_li]:ml-4`}>
+          <p className={`[&_ul]:list-disc [&_li]:ml-4 lg:pl-6 lg:pr-6`}>
             {htmr(props.job.desc)}
           </p>
           <hr className="m-6" />

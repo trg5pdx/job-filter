@@ -19,6 +19,8 @@ export default function SearchQuery(props: {
     salary_max: '',
     hourly_min: '',
     hourly_max: '',
+    allow_salary: true,
+    allow_hourly: true,
     allow_blank_pay: true,
     companies: '',
     workChoice: [],
@@ -173,8 +175,11 @@ export default function SearchQuery(props: {
             salary_max={search.salary_max}
             hourly_min={search.hourly_min}
             hourly_max={search.hourly_max}
+            allow_salary={search.allow_salary}
+            allow_hourly={search.allow_hourly}
             allow_blank_pay={search.allow_blank_pay}
             changeSearch={changeSearch}
+            changePayOptions={changeWorkOptions}
           />
         )}
         <Input

@@ -6,6 +6,16 @@ export enum jobBoards {
   Other
 }
 
+export interface WageOptions {
+  includeSalary: boolean
+  includeHourly: boolean
+  includeNoProvidedPay: boolean
+  salaryMin?: number
+  salaryMax?: number
+  hourlyMin?: number
+  hourlyMax?: number
+}
+
 export interface Query {
   search: string
   excluded_title?: string

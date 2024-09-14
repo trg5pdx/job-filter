@@ -9,22 +9,34 @@ function fix_unicode(excerpt: string) {
   })
 }
 
+// TODO: define interface for dealing with JSON objects so this actually has a type
+function get_pay_info(job) {
+  if (job.annualSalaryMin == undefined) {
+    return { provided: false }
+  } else if (job.annualSalaryMax == '') {
+    return {
+      provided: true,
+      salaryMin: parseInt(job.annualSalaryMin, 10),
+      currency: job.salaryCurrency
+    }
+  }
+
+  return {
+    provided: true,
+    salaryMin: parseInt(job.annualSalaryMin, 10),
+    salaryMax: parseInt(job.annualSalaryMax, 10),
+    currency: job.salaryCurrency
+  }
+}
+
 export async function GetJobListings() {
   const URL = 'https://jobicy.com/api/v2/remote-jobs?count=20&tag=python'
   const response = await axios.get(URL)
 
   let jobs = response.data.jobs.map((val) => {
-    let wage: Pay =
-      val.annualSalaryMin == undefined
-        ? {
-            provided: false
-          }
-        : {
-            provided: true,
-            salaryMin: parseInt(val.annualSalaryMin, 10),
-            salaryMax: parseInt(val.annualSalaryMax, 10),
-            currency: val.salaryCurrency
-          }
+    let wage: Pay = get_pay_info(val)
+    console.log(val)
+    console.log(wage)
     let job = new JobData(
       val.jobTitle,
       val.jobDescription,

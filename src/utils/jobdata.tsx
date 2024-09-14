@@ -67,7 +67,7 @@ export class JobData {
   jobBoard: jobBoards
   wage: Pay
   postDate: string
-  jobIndustry: string
+  jobIndustry: string[]
   jobType: string
 
   constructor(
@@ -82,7 +82,7 @@ export class JobData {
     jobBoard: string,
     wage: Pay,
     postDate: string,
-    jobIndustry: string,
+    jobIndustry: string[],
     jobType: string
   ) {
     this.title = title
@@ -95,7 +95,7 @@ export class JobData {
     this.locationOption = locationOption
     this.wage = wage
     this.postDate = postDate
-    this.jobIndustry = jobIndustry
+    this.jobIndustry = this.format_industry_name(jobIndustry)
     this.jobType = jobType
 
     switch (jobBoard) {
@@ -106,5 +106,11 @@ export class JobData {
         this.jobBoard = jobBoards.Other
         break
     }
+  }
+
+  format_industry_name(industries: string[]) {
+    return industries.map((val) => {
+      return val.replace('&amp;', '&')
+    })
   }
 }
