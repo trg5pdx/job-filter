@@ -3,7 +3,7 @@ import { Input, Checkbox, Button } from './inputs'
 import IndustrySelect from './industryselect'
 import PayInformation from './payinformation'
 import { Industry, IndustryNum } from '../utils/jobdata'
-import { jobBoards, Query } from '../utils/query'
+import { jobBoards, Query, WageOptions } from '../utils/query'
 import { JSXInternal } from 'node_modules/preact/src/jsx'
 
 export default function SearchQuery(props: {
@@ -38,50 +38,31 @@ export default function SearchQuery(props: {
   })
 
   const isValid = (x: string) => {
-    if (x == undefined || isNaN(parseInt(x, 10))) {
+    if (x == undefined || isNaN(parseFloat(x))) {
       return false
     }
     return true
   }
 
   const formatWage = (
+    includeSalary: boolean,
+    includeHourly: boolean,
+    includeNoProvidedPay: boolean,
     salary_min: string,
     salary_max: string,
     hourly_min: string,
     hourly_max: string
-  ) => {
-    if (
-      !isValid(salary_min) &&
-      !isValid(salary_max) &&
-      !isValid(hourly_min) &&
-      !isValid(hourly_max)
-    ) {
-      return { provided: false }
-    }
-
-    if (!isValid(salary_max) && !isValid(hourly_min) && !isValid(hourly_max)) {
-      return {
-        provided: true,
-        salaryMin: parseInt(salary_min, 10)
-      }
-    } else if (
-      !isValid(salary_min) &&
-      !isValid(hourly_min) &&
-      !isValid(hourly_max)
-    ) {
-      return {
-        provided: true,
-        salaryMax: parseInt(salary_max, 10)
-      }
-    }
-
-    // TODO: set up hourly pay logic and add options for choosing one or the other, or neither
-
+  ): WageOptions => {
     return {
-      provided: true,
-      salaryMin: parseInt(salary_min, 10),
-      salaryMax: parseInt(salary_max, 10)
+      includeSalary,
+      includeHourly,
+      includeNoProvidedPay,
+      salaryMin: isValid(salary_min) ? parseInt(salary_min, 10) : null,
+      salaryMax: isValid(salary_max) ? parseInt(salary_max, 10) : null,
+      hourlyMin: isValid(hourly_min) ? parseFloat(hourly_min) : null,
+      hourlyMax: isValid(hourly_max) ? parseFloat(hourly_max) : null,
     }
+
   }
 
   const changeSearch = (e: JSXInternal.TargetedEvent) => {
@@ -132,6 +113,9 @@ export default function SearchQuery(props: {
             excluded_title: search.excluded_title,
             excluded_desc: search.excluded_desc,
             wage: formatWage(
+              search.allow_salary,
+              search.allow_hourly,
+              search.allow_blank_pay,
               search.salary_min,
               search.salary_max,
               search.hourly_min,

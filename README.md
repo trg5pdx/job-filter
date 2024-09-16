@@ -1,7 +1,9 @@
 # Job Filter
 
 A web app for filtering job listings to find relevant jobs. This app pulls from
-other job sites, and then filter out jobs that don't follow the search query.
+other job sites, and allows for the user to filter out jobs that aren't as 
+relevant to them. The site provides a link to the original posting on the job 
+site so the user can apply on there.
 
 ## How to Install
 
@@ -25,8 +27,8 @@ default should be `http://localhost:5173`
 
 I've been looking for jobs for a while and I've been frustrated by the lack of
 filtering controls from job board sites, so I wanted to create something that
-would allow for me to parse the jobs and show results that I would be better
-qualified for, and would be more interested in.
+would allow for me to parse the job listings and find jobs that better fit my
+skills and experience and filter out the ones I'm less interested in. 
 
 ## Todo
 
@@ -36,7 +38,6 @@ qualified for, and would be more interested in.
 - [x] Filter out punctuation that ends up as code and replace it with the
       appropriate punctuation
   - [ ] Support hexadecimal codes
-        ~~- [ ] Parse the html from jobicy postings and put it into its own class~~
 - [x] HTML sanitized and displayed correctly within a card
 - [ ] Parse the job postings and pull information like YOE from them
   - [ ] Add a YOE field into the search form

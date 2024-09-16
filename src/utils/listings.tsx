@@ -35,8 +35,6 @@ export async function GetJobListings() {
 
   let jobs = response.data.jobs.map((val) => {
     let wage: Pay = get_pay_info(val)
-    console.log(val)
-    console.log(wage)
     let job = new JobData(
       val.jobTitle,
       val.jobDescription,

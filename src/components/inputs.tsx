@@ -36,7 +36,6 @@ export function Input({
   const labelText = title(id)
   // this feels bad, maybe come back and fix this
   const readonlyStyle = readonly ? 'line-through hover:cursor-not-allowed' : ''
-  console.log(readonly)
 
   return (
     <label htmlFor={id} className={`pt-2 pb-2 flex flex-col ${readonlyStyle}`}>

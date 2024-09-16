@@ -44,6 +44,13 @@ function JobListings(props: { query: Query }) {
 export function App() {
   const [query, setQuery] = useState<Query>({
     search: '',
+    excluded_title: '',
+    excluded_desc: '',
+    wage: {
+      includeSalary: true,
+      includeHourly: true,
+      includeNoProvidedPay: true,
+    },
     remote: true,
     hybrid: true,
     inperson: true

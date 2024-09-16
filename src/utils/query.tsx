@@ -20,7 +20,7 @@ export interface Query {
   search: string
   excluded_title?: string
   excluded_desc?: string
-  wage?: Pay
+  wage?: WageOptions
   companies?: string
   remote: boolean
   hybrid: boolean
@@ -93,24 +93,68 @@ export function exclude_job(
   return false
 }
 
-export function check_wage(job: JobData, wage: Pay): boolean {
-  if (wage == null || !wage.provided) {
-    return true
-  }
-  if (job.wage) {
-    if (!job.wage.provided) {
-      return false
+// I don't like how I redid this, I want to find a better way, but with
+// all of the conditions this may be the best way to do it
+export function check_wage(job: JobData, wage: WageOptions): boolean {
+  if(!job.wage.provided) {
+    if(wage.includeNoProvidedPay) {
+      return true
     }
-    if (
-      job.wage.salaryMin >= wage.salaryMin &&
-      (wage.salaryMax == undefined || job.wage.salaryMax <= wage.salaryMax)
-    ) {
-      return true
-    } else if (
-      job.wage.salaryMax <= wage.salaryMax &&
-      wage.salaryMin == undefined
-    ) {
-      return true
+  } else {
+    if(wage.includeHourly) {
+      if(!job.wage.salaryMin
+        && !job.wage.salaryMax
+        && !wage.hourlyMin
+        && !wage.hourlyMax
+      ) {
+        return true
+      }
+      if(!job.wage.hourlyMax 
+        && !job.wage.hourlyMin
+        && !wage.includeSalary
+        && !wage.includeNoProvidedPay
+      ) {
+        return false
+      }
+      if(job.wage.hourlyMin >= wage.hourlyMin
+        && (job.wage.hourlyMax <= wage.hourlyMax
+          || (!job.wage.hourlyMax && !wage.hourlyMax)
+        )
+      ) {
+        return true;
+      }
+      if(job.wage.hourlyMax <= wage.hourlyMax
+        && (!job.wage.hourlyMin && !wage.hourlyMin) 
+      ) {
+        return true
+      }
+    } 
+    if (wage.includeSalary) {
+      if(!wage.salaryMin 
+        && !wage.salaryMax
+        && !job.wage.hourlyMax
+        && !job.wage.hourlyMin
+      ) {
+        return true
+      }
+      if(!job.wage.salaryMax
+        && !job.wage.salaryMin
+        && !wage.includeHourly
+        && !wage.includeNoProvidedPay
+      ) {
+        return false
+      }
+      if(job.wage.salaryMin >= wage.salaryMin
+        && (job.wage.salaryMax <= wage.salaryMax
+          || !wage.salaryMax)
+      ) {
+          return true
+      }
+      if(job.wage.salaryMax <= wage.salaryMax
+        && ((!wage.salaryMin && !job.wage.salaryMin))
+      ) {
+        return true
+      }
     }
   }
 
