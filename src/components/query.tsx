@@ -2,6 +2,7 @@ import { useState } from 'preact/hooks'
 import { Input, Checkbox, Button } from './inputs'
 import IndustrySelect from './industryselect'
 import PayInformation from './payinformation'
+import Section from './section'
 import { Industry, IndustryNum } from '../utils/jobdata'
 import { jobBoards, Query, WageOptions } from '../utils/query'
 import { JSXInternal } from 'node_modules/preact/src/jsx'
@@ -60,9 +61,8 @@ export default function SearchQuery(props: {
       salaryMin: isValid(salary_min) ? parseInt(salary_min, 10) : null,
       salaryMax: isValid(salary_max) ? parseInt(salary_max, 10) : null,
       hourlyMin: isValid(hourly_min) ? parseFloat(hourly_min) : null,
-      hourlyMax: isValid(hourly_max) ? parseFloat(hourly_max) : null,
+      hourlyMax: isValid(hourly_max) ? parseFloat(hourly_max) : null
     }
-
   }
 
   const changeSearch = (e: JSXInternal.TargetedEvent) => {
@@ -88,12 +88,13 @@ export default function SearchQuery(props: {
       [target.id]: !toggleSubmenus[target.id]
     })
   }
-
-  return (
-    <section className="w-full ">
-      <form
+  /*
         className={`p-4 grid dark:bg-primary-900 bg-primary-300 pb-5 m-4 
         rounded-xl dark:border-secondary-500 border-secondary-900 border-2`}
+*/
+  return (
+    <Section className="p-4 pb-5 m-4 h-fit">
+      <form
         onSubmit={(e) => {
           e.preventDefault()
           let job_boards = []
@@ -221,6 +222,6 @@ export default function SearchQuery(props: {
         </div>
         <Button id="submit" type="submit" child="Submit Search" />
       </form>
-    </section>
+    </Section>
   )
 }

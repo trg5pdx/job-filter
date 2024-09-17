@@ -7,6 +7,7 @@ import { GetJobListings } from './utils/listings'
 import { Query, filter_jobs } from './utils/query'
 import { JobData } from './utils/jobdata'
 import './style.css'
+import SavedSearches from './components/savedsearches'
 
 function JobListings(props: { query: Query }) {
   const [jobs, setJobs] = useState<JobData[]>([])
@@ -49,27 +50,27 @@ export function App() {
     wage: {
       includeSalary: true,
       includeHourly: true,
-      includeNoProvidedPay: true,
+      includeNoProvidedPay: true
     },
     remote: true,
     hybrid: true,
     inperson: true
   })
-  /* const [modalView, setModalView] = useState(false)
-  const [modalChild, setModalChild] = useState(<></>) */
+  const [selectedSearch, setSelectedSearch] = useState<String>('')
 
   return (
     <div className="lg:grid lg:grid-cols-4">
-      <SearchQuery query={query} setQuery={setQuery} />
+      <div>
+        <SearchQuery query={query} setQuery={setQuery} />
+        <SavedSearches
+          tempSet={['search1', 'search2', 'but wait its search 4']}
+          selectedSearch={selectedSearch}
+          setSelectedSearch={setSelectedSearch}
+        />
+      </div>
       <div className="lg:col-span-3">
         <JobListings query={query} />
       </div>
-      {/* <Modal
-        viewModal={modalView}
-        setModalView={() => setModalView(!modalView)}
-        buttonText="bleh"
-        child={modalChild}
-    /> */}
     </div>
   )
 }
