@@ -26,7 +26,7 @@ function format_pay(wage: Pay) {
   }).format(wage.salaryMin)
 
   if (wage.salaryMax == undefined) {
-    return `Salary: ${salaryMin} and up`
+    return `Salary: ${salaryMin} and up (${wage.currency})`
   }
 
   let salaryMax = new Intl.NumberFormat(navigator.language, {
@@ -36,7 +36,7 @@ function format_pay(wage: Pay) {
     minimumFractionDigits: 0
   }).format(wage.salaryMax)
 
-  return `Salary: ${salaryMin} - ${salaryMax}`
+  return `Salary: ${salaryMin} - ${salaryMax} (${wage.currency})`
 }
 
 export default function Card(props: { job: JobData }) {

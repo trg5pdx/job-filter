@@ -29,7 +29,8 @@ export function Input({
       hourly_min: 'Min. Hourly Pay',
       hourly_max: 'Max. Hourly Pay',
       companies: 'Companies',
-      location: 'Job Location'
+      location: 'Job Location',
+      saveName: 'Save search'
     }[id]
   }
 

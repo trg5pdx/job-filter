@@ -63,7 +63,6 @@ export function App() {
       <div>
         <SearchQuery query={query} setQuery={setQuery} />
         <SavedSearches
-          tempSet={['search1', 'search2', 'but wait its search 4']}
           selectedSearch={selectedSearch}
           setSelectedSearch={setSelectedSearch}
         />
