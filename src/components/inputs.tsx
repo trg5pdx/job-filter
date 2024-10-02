@@ -8,6 +8,7 @@ interface TextInput {
   id: string
   value: string
   inputType: string
+  className?: string
   onChange: (arg0: JSXInternal.TargetedEvent) => void
   readonly?: boolean
 }
@@ -16,6 +17,7 @@ export function Input({
   id,
   value,
   inputType,
+  className = '',
   onChange,
   readonly = false
 }: TextInput) {
@@ -39,7 +41,10 @@ export function Input({
   const readonlyStyle = readonly ? 'line-through hover:cursor-not-allowed' : ''
 
   return (
-    <label htmlFor={id} className={`pt-2 pb-2 flex flex-col ${readonlyStyle}`}>
+    <label
+      htmlFor={id}
+      className={`pt-2 pb-2 flex flex-col ${className} ${readonlyStyle}`}
+    >
       {`${labelText}: `}
       <input
         type={inputType}
@@ -110,11 +115,12 @@ export function Button(props: {
   id: string
   child: string
   type?: string
+  className?: string
   onClick?: (arg0: JSXInternal.TargetedEvent) => void
 }) {
   const selectStyle = (id: string) => {
     return `p-2 mt-2 mb-2 rounded-md dark:bg-secondary-700 bg-secondary-400 
-    dark:text-neutral-100 text-neutral-950`
+    dark:text-neutral-100 text-neutral-950 ${props.className}`
   }
 
   return (

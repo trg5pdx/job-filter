@@ -26,8 +26,8 @@ export interface Query {
   hybrid: boolean
   inperson: boolean
   location?: string
-  industry?: [Industry]
-  board?: [jobBoards]
+  industry?: Industry[]
+  board?: jobBoards[]
 }
 
 export function filter_jobs(jobs: JobData[], query: Query) {
@@ -96,62 +96,70 @@ export function exclude_job(
 // I don't like how I redid this, I want to find a better way, but with
 // all of the conditions this may be the best way to do it
 export function check_wage(job: JobData, wage: WageOptions): boolean {
-  if(!job.wage.provided) {
-    if(wage.includeNoProvidedPay) {
+  if (!job.wage.provided) {
+    if (wage.includeNoProvidedPay) {
       return true
     }
   } else {
-    if(wage.includeHourly) {
-      if(!job.wage.salaryMin
-        && !job.wage.salaryMax
-        && !wage.hourlyMin
-        && !wage.hourlyMax
+    if (wage.includeHourly) {
+      if (
+        !job.wage.salaryMin &&
+        !job.wage.salaryMax &&
+        !wage.hourlyMin &&
+        !wage.hourlyMax
       ) {
         return true
       }
-      if(!job.wage.hourlyMax 
-        && !job.wage.hourlyMin
-        && !wage.includeSalary
-        && !wage.includeNoProvidedPay
+      if (
+        !job.wage.hourlyMax &&
+        !job.wage.hourlyMin &&
+        !wage.includeSalary &&
+        !wage.includeNoProvidedPay
       ) {
         return false
       }
-      if(job.wage.hourlyMin >= wage.hourlyMin
-        && (job.wage.hourlyMax <= wage.hourlyMax
-          || (!job.wage.hourlyMax && !wage.hourlyMax)
-        )
-      ) {
-        return true;
-      }
-      if(job.wage.hourlyMax <= wage.hourlyMax
-        && (!job.wage.hourlyMin && !wage.hourlyMin) 
+      if (
+        job.wage.hourlyMin >= wage.hourlyMin &&
+        (job.wage.hourlyMax <= wage.hourlyMax ||
+          (!job.wage.hourlyMax && !wage.hourlyMax))
       ) {
         return true
       }
-    } 
+      if (
+        job.wage.hourlyMax <= wage.hourlyMax &&
+        !job.wage.hourlyMin &&
+        !wage.hourlyMin
+      ) {
+        return true
+      }
+    }
     if (wage.includeSalary) {
-      if(!wage.salaryMin 
-        && !wage.salaryMax
-        && !job.wage.hourlyMax
-        && !job.wage.hourlyMin
+      if (
+        !wage.salaryMin &&
+        !wage.salaryMax &&
+        !job.wage.hourlyMax &&
+        !job.wage.hourlyMin
       ) {
         return true
       }
-      if(!job.wage.salaryMax
-        && !job.wage.salaryMin
-        && !wage.includeHourly
-        && !wage.includeNoProvidedPay
+      if (
+        !job.wage.salaryMax &&
+        !job.wage.salaryMin &&
+        !wage.includeHourly &&
+        !wage.includeNoProvidedPay
       ) {
         return false
       }
-      if(job.wage.salaryMin >= wage.salaryMin
-        && (job.wage.salaryMax <= wage.salaryMax
-          || !wage.salaryMax)
+      if (
+        job.wage.salaryMin >= wage.salaryMin &&
+        (job.wage.salaryMax <= wage.salaryMax || !wage.salaryMax)
       ) {
-          return true
+        return true
       }
-      if(job.wage.salaryMax <= wage.salaryMax
-        && ((!wage.salaryMin && !job.wage.salaryMin))
+      if (
+        job.wage.salaryMax <= wage.salaryMax &&
+        !wage.salaryMin &&
+        !job.wage.salaryMin
       ) {
         return true
       }

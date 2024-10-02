@@ -56,16 +56,12 @@ export function App() {
     hybrid: true,
     inperson: true
   })
-  const [selectedSearch, setSelectedSearch] = useState<String>('')
 
   return (
     <div className="lg:grid lg:grid-cols-4">
       <div>
         <SearchQuery query={query} setQuery={setQuery} />
-        <SavedSearches
-          selectedSearch={selectedSearch}
-          setSelectedSearch={setSelectedSearch}
-        />
+        <SavedSearches query={query} setQuery={setQuery} />
       </div>
       <div className="lg:col-span-3">
         <JobListings query={query} />

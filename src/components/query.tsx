@@ -9,7 +9,7 @@ import { JSXInternal } from 'node_modules/preact/src/jsx'
 
 export default function SearchQuery(props: {
   query: Query
-  setQuery: (Query) => void
+  setQuery: (arg0: Query) => void
 }) {
   const [search, setSearch] = useState({
     search: '',
@@ -97,8 +97,8 @@ export default function SearchQuery(props: {
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          let job_boards = []
-          let job_industry = []
+          let job_boards: jobBoards[] = []
+          let job_industry: Industry[] = []
           if (search.board_jobicy) {
             job_boards.push(jobBoards.Jobicy)
           }
